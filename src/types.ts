@@ -18,3 +18,14 @@ export interface TypedCSVData {
 }
 
 export type Header = string
+
+export interface RacesMap {
+  [key: string]: RaceEntry[]
+}
+
+export interface RaceEntry {
+  start: RaceEntryField
+  end: RaceEntryField
+}
+
+export type RaceEntryField = number | null | undefined
