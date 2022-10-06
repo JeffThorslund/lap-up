@@ -1,21 +1,36 @@
-import { appendHeadersToData, CSVData, parseRawData, sortByTime } from './index'
+import { blah, mergeLists, sortByTime } from './index'
+import { CSVData, ResultType } from './types'
 
-test('add headers to raw data', () => {
-  expect(appendHeadersToData(['id', 'time'], '48\t1653746491')).toEqual('id\ttime\n48\t1653746491')
+describe('merge', () => {
+  test('merge lists', () => {
+    expect(mergeLists([{
+      id: '2',
+      time: 456,
+      type: ResultType.START
+    }], [{ id: '1', time: 123, type: ResultType.START }])).toEqual([{ id: '1', time: 123, type: ResultType.START }, {
+      id: '2',
+      time: 456,
+      type: ResultType.START
+    }])
+  })
 })
 
-test('parse raw data into data structure', () => {
-  expect(parseRawData('id\ttime\n48\t16')).toEqual([{ id: '48', time: '16' }])
-})
-
-test('sort entries by time', () => {
+test.skip('sort entries by time', () => {
   const unsortedEntries: CSVData[] = [
     { id: '1', time: '5' },
     { id: '2', time: '2' }
   ]
 
   expect(sortByTime(unsortedEntries)).toEqual([
-    { id: '2', time: '2' },
-    { id: '1', time: '5' }
+    { id: '2', time: 2 },
+    { id: '1', time: 5 }
   ])
+})
+
+test.skip('make dictionary', () => {
+  expect(blah([{ id: '1', time: 3 }], [{ id: '1', time: 4 }])).toEqual([])
+})
+
+test.skip('make dictionary', () => {
+  expect(blah([{ id: '1', time: 3 }], [{ id: '1', time: 4 }])).toEqual({ 1: [{ start: '3', end: '4' }] })
 })

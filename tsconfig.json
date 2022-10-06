@@ -13,7 +13,8 @@
 
     "moduleResolution": "node",
     "outDir": "lib",
-    "declaration": true
+    "declaration": true,
+    "watch": true
   },
 
   "include": ["src/**/*"]
