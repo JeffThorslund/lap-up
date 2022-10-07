@@ -1,51 +1,66 @@
-import {TypedCSVData, RacesMap, ResultType, RaceEntry} from "./types"
+import {TypedCSVData, RacesMap, ResultType, RaceEntry, Id} from "./types"
 
 export const mergeLists = (starts: TypedCSVData[], ends: TypedCSVData[]): TypedCSVData[] => {
     return [...starts, ...ends].sort((a, b) => a.time - b.time)
 }
 export const createStructure = (list: TypedCSVData[]): RacesMap => {
 
-    const races: RacesMap = {}
+    let allRaces: RacesMap = {}
 
     for (const entry of list) {
 
-        // create new racer
-        if (!races[entry.id]) {
-            races[entry.id] = []
+        if (!allRaces[entry.id]) {
+            allRaces = addNewRacer(allRaces, entry.id)
         }
 
-        // get last race element
-        const lastElement = getLastElement(races[entry.id])
+        const someRaces = allRaces[entry.id]
 
-        const isCurrentlyRacing = getIsCurrentlyRacing(lastElement)
+        const entryHandlers = createEntryHandlers(someRaces, entry.time)
 
-        if (entry.type === ResultType.START) {
-            if (isCurrentlyRacing) {
-                lastElement.end = null
-            }
+        switch (entry.type) {
+            case ResultType.START:
+                entryHandlers.start()
+                break;
 
-            races[entry.id].push({start: entry.time, end: undefined})
-
-            //return races
-        }
-
-        if (entry.type === ResultType.END) {
-
-            if (!isCurrentlyRacing) {
-                races[entry.id].push({start: null, end: undefined})
-            }
-
-            lastElement.end = entry.time
-
-            //return races
+            case ResultType.END:
+                entryHandlers.end()
+                break;
         }
     }
 
-    return races
+    return allRaces
 }
+
+export const addNewRacer = (races: RacesMap, newRacerId: Id) => {
+    return {...races, [newRacerId]: []}
+}
+
+export const createEntryHandlers = (races: RaceEntry[], time: number) => {
+    const lastElement = getLastElement(races)
+    const isCurrentlyRacing = getIsCurrentlyRacing(lastElement)
+
+    return {
+        start() {
+            if (isCurrentlyRacing) {
+                endCurrentRace(lastElement)
+            }
+
+            races.push({start: time, end: undefined})
+        },
+        end() {
+            if (!isCurrentlyRacing) {
+                races.push({start: null, end: undefined})
+            }
+
+            lastElement.end = time
+        }
+    }
+}
+
 export const getLastElement = (arr: RaceEntry[]): RaceEntry => {
     return arr[arr.length - 1]
 }
+
 export const getIsCurrentlyRacing = (lastElement: RaceEntry): boolean => {
     // racer has not started their first race
     if (lastElement === undefined) {
@@ -59,3 +74,8 @@ export const getIsCurrentlyRacing = (lastElement: RaceEntry): boolean => {
 
     return true
 }
+
+export const endCurrentRace = (lastElement: RaceEntry) => {
+    lastElement.end = null
+}
+
