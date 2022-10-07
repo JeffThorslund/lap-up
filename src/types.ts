@@ -25,7 +25,7 @@ export interface RacesMap {
 
 export interface RaceEntry {
   start: RaceEntryField
-  end: RaceEntryField
+  end: RaceEntryField | undefined
 }
 
-export type RaceEntryField = number | null | undefined
+export type RaceEntryField = number | null
