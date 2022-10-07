@@ -1,4 +1,4 @@
-import {mergeLists, createStructure, getLastElement} from './index'
+import {mergeLists, createStructure, getLastElement} from './createStructure'
 import {ResultType} from './types'
 
 
