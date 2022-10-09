@@ -23,7 +23,7 @@ export const parseRawData = (rawData: CSVInput): CSVData[] => {
   const result = parse<CSVData>(rawData, { header: true })
 
   if (result.errors.length > 0) {
-    throw new Error(result.errors.map(e => e.message).join('; '))
+    // throw new Error(result.errors.map(e => e.message).join('; '))
   }
 
   return result.data

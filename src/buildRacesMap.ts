@@ -1,11 +1,11 @@
 import { Id, RaceEntry, RacesMap, ResultType, TypedCSVData } from './types'
 
 export const buildRacesMap = (list: TypedCSVData[]): RacesMap => {
-  let allRaces: RacesMap = {}
+  const allRaces: RacesMap = {}
 
   for (const entry of list) {
     if (allRaces[entry.id] === undefined) {
-      allRaces = addNewRacer(allRaces, entry.id)
+      addNewRacer(allRaces, entry.id)
     }
 
     const someRaces = allRaces[entry.id]
@@ -23,14 +23,13 @@ export const buildRacesMap = (list: TypedCSVData[]): RacesMap => {
     }
   }
 
+  endAllCurrentRaces(allRaces)
+
   return allRaces
 }
 
-export const addNewRacer = (races: RacesMap, newRacerId: Id): RacesMap => {
-  return {
-    ...races,
-    [newRacerId]: []
-  }
+export const addNewRacer = (races: RacesMap, newRacerId: Id): void => {
+  races[newRacerId] = []
 }
 
 export const createEntryHandlers = (races: RaceEntry[], time: number): { start: () => void, end: () => void } => {
@@ -78,4 +77,14 @@ export const getIsCurrentlyRacing = (lastElement: RaceEntry): boolean => {
 
 export const endCurrentRace = (lastElement: RaceEntry): void => {
   lastElement.end = null
+}
+
+export const endAllCurrentRaces = (races: RacesMap): void => {
+  for (const id in races) {
+    const lastElement = getLastElement(races[id])
+    const isCurrentlyRacing = getIsCurrentlyRacing(lastElement)
+    if (isCurrentlyRacing) {
+      endCurrentRace(lastElement)
+    }
+  }
 }
