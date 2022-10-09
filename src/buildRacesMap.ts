@@ -1,9 +1,6 @@
 import { Id, RaceEntry, RacesMap, ResultType, TypedCSVData } from './types'
 
-export const mergeLists = (starts: TypedCSVData[], ends: TypedCSVData[]): TypedCSVData[] => {
-  return [...starts, ...ends].sort((a, b) => a.time - b.time)
-}
-export const createStructure = (list: TypedCSVData[]): RacesMap => {
+export const buildRacesMap = (list: TypedCSVData[]): RacesMap => {
   let allRaces: RacesMap = {}
 
   for (const entry of list) {
@@ -64,6 +61,7 @@ export const createEntryHandlers = (races: RaceEntry[], time: number): { start: 
   }
 }
 
+// todo account for undefined
 export const getLastElement = (arr: RaceEntry[]): RaceEntry => {
   return arr[arr.length - 1]
 }

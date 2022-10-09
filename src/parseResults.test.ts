@@ -1,11 +1,11 @@
 import {
   appendHeadersToData,
   enumerateResults,
+  parseEnds,
   parseRawData,
-  prepEndResults,
-  prepResults,
-  prepStartResults
-} from './prepResults'
+  parseResults,
+  parseStarts
+} from './parseResults'
 import { ResultType } from './types'
 
 describe('header appending', () => {
@@ -51,7 +51,7 @@ describe('enumerate data', () => {
 
 describe('prepare data', () => {
   test('base', () => {
-    expect(prepResults('1\t123', ['id', 'time'], ResultType.START)).toEqual([{
+    expect(parseResults('1\t123', ['id', 'time'], ResultType.START)).toEqual([{
       id: '1',
       time: 123,
       type: ResultType.START
@@ -59,7 +59,7 @@ describe('prepare data', () => {
   })
 
   test('start', () => {
-    expect(prepStartResults('1\t123')).toEqual([{
+    expect(parseStarts('1\t123')).toEqual([{
       id: '1',
       time: 123,
       type: ResultType.START
@@ -67,7 +67,7 @@ describe('prepare data', () => {
   })
 
   test('end', () => {
-    expect(prepEndResults('1\t123')).toEqual([{
+    expect(parseEnds('1\t123')).toEqual([{
       id: '1',
       time: 123,
       type: ResultType.END

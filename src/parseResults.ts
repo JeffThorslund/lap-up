@@ -1,11 +1,11 @@
 import { parse } from 'papaparse'
 import { CSVData, CSVInput, Header, ResultType, TypedCSVData } from './types'
 
-export const prepStartResults = (rawStarts: CSVInput): TypedCSVData[] => prepResults(rawStarts, ['id', 'time'], ResultType.START)
+export const parseStarts = (rawStarts: CSVInput): TypedCSVData[] => parseResults(rawStarts, ['id', 'time'], ResultType.START)
 
-export const prepEndResults = (rawEnds: CSVInput): TypedCSVData[] => prepResults(rawEnds, ['id', 'time'], ResultType.END)
+export const parseEnds = (rawEnds: CSVInput): TypedCSVData[] => parseResults(rawEnds, ['id', 'time'], ResultType.END)
 
-export const prepResults = (rawData: CSVInput, headers: Header[], type: ResultType): TypedCSVData[] => {
+export const parseResults = (rawData: CSVInput, headers: Header[], type: ResultType): TypedCSVData[] => {
   const dataWithHeaders = appendHeadersToData(headers, rawData)
   const parsedData = parseRawData(dataWithHeaders)
   return enumerateResults(parsedData, type)
@@ -20,13 +20,13 @@ export const appendHeadersToData = (headers: Header[], rawData: CSVInput): strin
 }
 
 export const parseRawData = (rawData: CSVInput): CSVData[] => {
-  const parseResult = parse<CSVData>(rawData, { header: true })
+  const result = parse<CSVData>(rawData, { header: true })
 
-  if (parseResult.errors.length > 0) {
-    throw new Error(parseResult.errors.map(e => e.message).join('; '))
+  if (result.errors.length > 0) {
+    throw new Error(result.errors.map(e => e.message).join('; '))
   }
 
-  return parseResult.data
+  return result.data
 }
 
 export const enumerateResults = (entries: CSVData[], type: ResultType): TypedCSVData[] => {

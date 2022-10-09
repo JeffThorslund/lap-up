@@ -1,27 +1,9 @@
-import { createStructure, getLastElement, mergeLists } from './createStructure'
+import { buildRacesMap, getLastElement } from './buildRacesMap'
 import { ResultType } from './types'
-
-describe('merge', () => {
-  const raceEntry1 = {
-    id: '1',
-    time: 123,
-    type: ResultType.START
-  }
-
-  const raceEntry2 = {
-    id: '2',
-    time: 456,
-    type: ResultType.END
-  }
-
-  test('merge lists', () => {
-    expect(mergeLists([raceEntry2], [raceEntry1])).toEqual([raceEntry1, raceEntry2])
-  })
-})
 
 describe('structure creation', function () {
   test('add new racer', () => {
-    expect(createStructure([
+    expect(buildRacesMap([
       {
         id: '1',
         type: ResultType.START,
