@@ -25,7 +25,10 @@ describe('header appending', () => {
 
 describe('parsing', () => {
   test('parse raw data into data structure', () => {
-    expect(parseRawData('id\ttime\n48\t16')).toEqual([{ id: '48', time: '16' }])
+    expect(parseRawData('id\ttime\n48\t16')).toEqual([{
+      id: '48',
+      time: '16'
+    }])
   })
 
   test('wrong number of headers', () => {
@@ -35,7 +38,10 @@ describe('parsing', () => {
 
 describe('enumerate data', () => {
   test('add START enum to data', () => {
-    expect(enumerateResults([{ time: '123', id: '1' }], ResultType.START)).toEqual([{
+    expect(enumerateResults([{
+      time: '123',
+      id: '1'
+    }], ResultType.START)).toEqual([{
       id: '1',
       time: 123,
       type: ResultType.START
@@ -45,14 +51,26 @@ describe('enumerate data', () => {
 
 describe('prepare data', () => {
   test('base', () => {
-    expect(prepResults('1\t123', ['id', 'time'], ResultType.START)).toEqual([{ id: '1', time: 123, type: ResultType.START }])
+    expect(prepResults('1\t123', ['id', 'time'], ResultType.START)).toEqual([{
+      id: '1',
+      time: 123,
+      type: ResultType.START
+    }])
   })
 
   test('start', () => {
-    expect(prepStartResults('1\t123')).toEqual([{ id: '1', time: 123, type: ResultType.START }])
+    expect(prepStartResults('1\t123')).toEqual([{
+      id: '1',
+      time: 123,
+      type: ResultType.START
+    }])
   })
 
   test('end', () => {
-    expect(prepEndResults('1\t123')).toEqual([{ id: '1', time: 123, type: ResultType.END }])
+    expect(prepEndResults('1\t123')).toEqual([{
+      id: '1',
+      time: 123,
+      type: ResultType.END
+    }])
   })
 })

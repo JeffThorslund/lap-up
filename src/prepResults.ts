@@ -30,5 +30,9 @@ export const parseRawData = (rawData: CSVInput): CSVData[] => {
 }
 
 export const enumerateResults = (entries: CSVData[], type: ResultType): TypedCSVData[] => {
-  return entries.map(e => ({ id: e.id, time: Number(e.time), type }))
+  return entries.map(e => ({
+    id: e.id,
+    time: Number(e.time),
+    type
+  }))
 }
