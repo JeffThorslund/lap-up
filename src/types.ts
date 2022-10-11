@@ -7,35 +7,15 @@ export interface CSVData {
   time: string
 }
 
-export enum ResultType {
-  START = 'start', END = 'end'
-}
-
 export interface TypedCSVData {
-  id: CSVData['id']
+  id: Id
   time: number
-  type?: ResultType
 }
 
 export type Header = string
 
-export interface BaseRacesMap<T> {
-  [key: string]: T[]
-}
-
-export interface StartsRacesMap extends BaseRacesMap<StartsRaceEntry> {
-}
-
-export interface FinalRacesMap extends BaseRacesMap<FinalRaceEntry> {
-}
-
-export interface IndexTrackingMap {
-  [key: string]: number
-}
-
-export interface StartsRaceEntry {
-  start: number
-  end: undefined
+export interface FinalRacesMap {
+  [key: string]: FinalRaceEntry[]
 }
 
 export interface FinalRaceEntry {
@@ -44,5 +24,5 @@ export interface FinalRaceEntry {
 }
 
 export interface DataStructure {
-  [key: string]: { starts: TypedCSVData[], ends: TypedCSVData[] }
+  [key: string]: { starts: number[], ends: number[] }
 }

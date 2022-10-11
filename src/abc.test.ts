@@ -1,4 +1,4 @@
-import { abc, buildEntry, createUniqueIds } from './abc'
+import { abc, buildEntry, createUniqueIds, iterateOverObj } from './abc'
 
 describe('create unique ids', () => {
   test('empty lists', () => {
@@ -69,15 +69,13 @@ describe('build entry', () => {
   })
 })
 
-// end to end
-
-describe('abc', () => {
+describe('interate over obj', () => {
   test('empty lists', () => {
-    expect(abc([], [])).toEqual({})
+    expect(iterateOverObj([], [])).toEqual({})
   })
 
   test('single id, single end, no starts', () => {
-    expect(abc([], [{
+    expect(iterateOverObj([], [{
       id: '1',
       time: 1
     }])).toEqual({
@@ -89,7 +87,7 @@ describe('abc', () => {
   })
 
   test('single id, several ends, no starts', () => {
-    expect(abc([], [{
+    expect(iterateOverObj([], [{
       id: '1',
       time: 1
     }, {
@@ -107,7 +105,7 @@ describe('abc', () => {
   })
 
   test('single id, several start', () => {
-    expect(abc([{
+    expect(iterateOverObj([{
       id: '1',
       time: 1
     }, {
@@ -125,7 +123,7 @@ describe('abc', () => {
   })
 
   test('regular case', () => {
-    expect(abc([{
+    expect(iterateOverObj([{
       id: '1',
       time: 100
     }], [{
@@ -137,5 +135,82 @@ describe('abc', () => {
         end: 200
       }]
     })
+  })
+
+  test('traverse several starts', () => {
+    expect(iterateOverObj([{
+      id: '1',
+      time: 10
+    }, {
+      id: '1',
+      time: 20
+    }], [{
+      id: '1',
+      time: 25
+    }])).toEqual({
+      1: [{
+        start: 10,
+        end: null
+      }, {
+        start: 20,
+        end: 25
+      }]
+    })
+  })
+})
+
+describe('', () => {
+  test('regular case', () => {
+    expect(abc([10, 20, 30], [15, 25, 35])).toEqual([{
+      start: 10,
+      end: 15
+    }, {
+      start: 20,
+      end: 25
+    }, {
+      start: 30,
+      end: 35
+    }])
+  })
+
+  test('all starts', () => {
+    expect(abc([10, 20, 30], [])).toEqual([{
+      start: 10,
+      end: null
+    }, {
+      start: 20,
+      end: null
+    }, {
+      start: 30,
+      end: null
+    }])
+  })
+
+  test('all ends', () => {
+    expect(abc([], [15, 25, 35])).toEqual([{
+      start: null,
+      end: 15
+    }, {
+      start: null,
+      end: 25
+    }, {
+      start: null,
+      end: 35
+    }])
+  })
+
+  test('random case', () => {
+    const createArray = (maxLength: number, maxValue: number): number[] => {
+      const rand = (val: number): number => Math.floor(Math.random() * val)
+
+      return Array.from({
+        length: rand(maxLength)
+      }, () => rand(maxValue))
+    }
+
+    expect(() => abc(
+      createArray(100, 1000),
+      createArray(100, 1000)
+    )).not.toThrow()
   })
 })

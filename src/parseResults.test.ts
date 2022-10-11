@@ -1,12 +1,4 @@
-import {
-  appendHeadersToData,
-  enumerateResults,
-  parseEnds,
-  parseRawData,
-  parseResults,
-  parseStarts
-} from './parseResults'
-import { ResultType } from './types'
+import { appendHeadersToData, enumerateResults, parseRawData, parseResults } from './parseResults'
 
 describe('header appending', () => {
   test('add headers to raw data', () => {
@@ -41,36 +33,18 @@ describe('enumerate data', () => {
     expect(enumerateResults([{
       time: '123',
       id: '1'
-    }], ResultType.START)).toEqual([{
+    }])).toEqual([{
       id: '1',
-      time: 123,
-      type: ResultType.START
+      time: 123
     }])
   })
 })
 
 describe('prepare data', () => {
   test('base', () => {
-    expect(parseResults('1\t123', ['id', 'time'], ResultType.START)).toEqual([{
+    expect(parseResults('1\t123', ['id', 'time'])).toEqual([{
       id: '1',
-      time: 123,
-      type: ResultType.START
-    }])
-  })
-
-  test('start', () => {
-    expect(parseStarts('1\t123')).toEqual([{
-      id: '1',
-      time: 123,
-      type: ResultType.START
-    }])
-  })
-
-  test('end', () => {
-    expect(parseEnds('1\t123')).toEqual([{
-      id: '1',
-      time: 123,
-      type: ResultType.END
+      time: 123
     }])
   })
 })

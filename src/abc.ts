@@ -1,50 +1,51 @@
 import { DataStructure, FinalRaceEntry, FinalRacesMap, Id, TypedCSVData } from './types'
 
-export const abc = (starts: TypedCSVData[], ends: TypedCSVData[]): FinalRacesMap => {
-  const uniqueIds = createUniqueIds(starts, ends)
-
-  const allRacerData = separateData(uniqueIds, starts, ends)
-
+export const iterateOverObj = (starts: TypedCSVData[], ends: TypedCSVData[]): FinalRacesMap => {
+  const uniqueIds: Id[] = createUniqueIds(starts, ends)
+  const allRacerData: DataStructure = separateData(uniqueIds, starts, ends)
   const finalRacesMap: FinalRacesMap = {}
-
   for (const id in allRacerData) {
     const racerData = allRacerData[id]
-
-    const starts = racerData.starts.map(s => ({
-      start: s.time,
-      end: undefined
-    }))
-
-    const finals: FinalRaceEntry[] = []
-
-    let pointer = 0
-
-    for (const end of racerData.ends) {
-      // this covers ends that occur before any starts
-      if (starts[pointer] === undefined || end.time < starts[pointer].start) {
-        finals.push(buildEntry.startless(end.time))
-      } else if (end.time >= starts[pointer].start) {
-        while (starts[pointer + 1] !== undefined && end.time > starts[pointer + 1].start) {
-          finals.push(buildEntry.startless(starts[pointer].start))
-        }
-        finals.push(buildEntry.base(starts[pointer].start, end.time))
-        pointer++
-      } else {
-        // pointer++
-      }
-    }
-
-    // append rest of starts
-    const startsAfterCurrentIndex = starts.slice(pointer)
-    finals.push(...startsAfterCurrentIndex.map(e => buildEntry.endless(e.start)))
-
-    finalRacesMap[id] = finals
+    finalRacesMap[id] = abc(racerData.starts, racerData.ends)
   }
 
   return finalRacesMap
 }
 
-export const createUniqueIds = (starts: TypedCSVData[], ends: TypedCSVData[]): string[] => [...new Set([...starts, ...ends].map(e => e.id))]
+export const abc = (starts: number[], ends: number[]): FinalRaceEntry[] => {
+  const firstPass = starts.map(start => ({
+    start,
+    end: undefined
+  }))
+
+  const finals: FinalRaceEntry[] = []
+
+  let pointer = 0
+
+  for (const end of ends) {
+    // this covers ends that occur before any starts
+    if (firstPass[pointer] === undefined || end < firstPass[pointer].start) {
+      finals.push(buildEntry.startless(end))
+    } else if (end >= firstPass[pointer].start) {
+      while (firstPass[pointer + 1] !== undefined && end > firstPass[pointer + 1].start) {
+        finals.push(buildEntry.endless(firstPass[pointer].start))
+        pointer++
+      }
+      finals.push(buildEntry.base(firstPass[pointer].start, end))
+      pointer++
+    } else {
+      throw new Error('Unexpected error encountered')
+    }
+  }
+
+  // append rest of starts
+  const startsAfterCurrentIndex = firstPass.slice(pointer)
+  finals.push(...startsAfterCurrentIndex.map(e => buildEntry.endless(e.start)))
+
+  return finals
+}
+
+export const createUniqueIds = (starts: TypedCSVData[], ends: TypedCSVData[]): Id[] => [...new Set([...starts, ...ends].map(e => e.id))]
 
 export const buildEntry = {
   startless (endTime: number): FinalRaceEntry {
@@ -78,11 +79,11 @@ export const separateData = (uniqueIds: Id[], starts: TypedCSVData[], ends: Type
   }
 
   for (const start of starts) {
-    data[start.id].starts.push(start)
+    data[start.id].starts.push(start.time)
   }
 
   for (const end of ends) {
-    data[end.id].ends.push(end)
+    data[end.id].ends.push(end.time)
   }
 
   return data
