@@ -1,21 +1,22 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Node 16",
-
   "compilerOptions": {
-    "lib": ["es2021"],
+    "lib": [
+      "es2021"
+    ],
     "module": "commonjs",
-
+    "target": "ES2015",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-
     "moduleResolution": "node",
     "outDir": "lib",
     "declaration": true,
     "watch": true
   },
-
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*"
+  ]
 }

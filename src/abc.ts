@@ -1,40 +1,44 @@
-import { FinalRacesMap, Id, IndexTrackingMap, StartsRacesMap, TypedCSVData } from './types'
+import {
+  DataStructure,
+  FinalRaceEntry,
+  FinalRacesMap,
+  Id,
+  IndexTrackingMap,
+  StartsRacesMap,
+  TypedCSVData
+} from './types'
 
 export const abc = (starts: TypedCSVData[], ends: TypedCSVData[]): FinalRacesMap => {
   const uniqueIds = createUniqueIds(starts, ends)
-  const startsRacesMap = createStartsRacesMap(uniqueIds, starts)
-  const finalRacesMap = createFinalRacesMap(uniqueIds)
-  const pointerMap = createPointerMap(uniqueIds)
 
-  // handle ends
-  for (let i = 0; i < ends.length; i++) {
-    const currentId = ends[i].id
-    const someStarts = startsRacesMap[currentId]
-    const someFinals = finalRacesMap[currentId]
+  const allRacerData = separateData(uniqueIds, starts, ends)
 
-    // if end is before currently indexed start
-    if (ends[i].time < someStarts[pointerMap[currentId]].start) {
-      someFinals.push({
-        start: null,
-        end: ends[i].time
-      })
-    } else if (ends[i].time > someStarts[pointerMap[currentId]].start) {
-      while (ends[i].time > someStarts[pointerMap[currentId] + 1].start) {
-        someFinals.push({
-          start: someStarts[pointerMap[currentId]].start,
-          end: null
-        })
+  const finalRacesMap: FinalRacesMap = {}
 
-        pointerMap[currentId]++
+  for (const id in allRacerData) {
+    const racerData = allRacerData[id]
+
+    const starts = racerData.starts.map(s => ({
+      start: s.time,
+      end: undefined
+    }))
+
+    const finals: FinalRaceEntry[] = []
+
+    const pointer = 0
+
+    for (const end of racerData.ends) {
+      if (starts[pointer] === undefined) {
+        finals.push(buildEntry.startless(end.time))
       }
-
-      someFinals.push({
-        start: someStarts[pointerMap[currentId]].start,
-        end: ends[i].time
-      })
-
-      pointerMap[currentId]++
     }
+
+    // append rest of starts
+
+    const startsAfterCurrentIndex = starts.slice(pointer)
+    finals.push(...startsAfterCurrentIndex.map(e => buildEntry.endless(e.start)))
+
+    finalRacesMap[id] = finals
   }
 
   return finalRacesMap
@@ -75,4 +79,46 @@ export const createPointerMap = (uniqueIds: Id[]): IndexTrackingMap => {
     ...acc,
     [cur]: 0
   }), {})
+}
+
+export const buildEntry = {
+  startless (endTime: number): FinalRaceEntry {
+    return {
+      start: null,
+      end: endTime
+    }
+  },
+  endless (startTime: number): FinalRaceEntry {
+    return {
+      start: startTime,
+      end: null
+    }
+  },
+  base (startTime: number, endTime: number): FinalRaceEntry {
+    return {
+      start: startTime,
+      end: endTime
+    }
+  }
+}
+
+export const separateData = (uniqueIds: Id[], starts: TypedCSVData[], ends: TypedCSVData[]): DataStructure => {
+  const data: DataStructure = {}
+
+  for (const id of uniqueIds) {
+    data[id] = {
+      starts: [],
+      ends: []
+    }
+  }
+
+  for (const start of starts) {
+    data[start.id].starts.push(start)
+  }
+
+  for (const end of ends) {
+    data[end.id].ends.push(end)
+  }
+
+  return data
 }
