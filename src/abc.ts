@@ -1,12 +1,4 @@
-import {
-  DataStructure,
-  FinalRaceEntry,
-  FinalRacesMap,
-  Id,
-  IndexTrackingMap,
-  StartsRacesMap,
-  TypedCSVData
-} from './types'
+import { DataStructure, FinalRaceEntry, FinalRacesMap, Id, TypedCSVData } from './types'
 
 export const abc = (starts: TypedCSVData[], ends: TypedCSVData[]): FinalRacesMap => {
   const uniqueIds = createUniqueIds(starts, ends)
@@ -25,16 +17,24 @@ export const abc = (starts: TypedCSVData[], ends: TypedCSVData[]): FinalRacesMap
 
     const finals: FinalRaceEntry[] = []
 
-    const pointer = 0
+    let pointer = 0
 
     for (const end of racerData.ends) {
-      if (starts[pointer] === undefined) {
+      // this covers ends that occur before any starts
+      if (starts[pointer] === undefined || end.time < starts[pointer].start) {
         finals.push(buildEntry.startless(end.time))
+      } else if (end.time >= starts[pointer].start) {
+        while (starts[pointer + 1] !== undefined && end.time > starts[pointer + 1].start) {
+          finals.push(buildEntry.startless(starts[pointer].start))
+        }
+        finals.push(buildEntry.base(starts[pointer].start, end.time))
+        pointer++
+      } else {
+        // pointer++
       }
     }
 
     // append rest of starts
-
     const startsAfterCurrentIndex = starts.slice(pointer)
     finals.push(...startsAfterCurrentIndex.map(e => buildEntry.endless(e.start)))
 
@@ -45,41 +45,6 @@ export const abc = (starts: TypedCSVData[], ends: TypedCSVData[]): FinalRacesMap
 }
 
 export const createUniqueIds = (starts: TypedCSVData[], ends: TypedCSVData[]): string[] => [...new Set([...starts, ...ends].map(e => e.id))]
-
-export const createStartsRacesMap = (uniqueIds: Id[], starts: TypedCSVData[]): StartsRacesMap => {
-  // add all racer ids
-  const startsRacesMap = uniqueIds.reduce<StartsRacesMap>((acc, cur) => ({
-    ...acc,
-    [cur]: []
-  }), {})
-
-  // push all starts
-  for (let i = 0; i < starts.length; i++) {
-    const someRaces = startsRacesMap[starts[i].id]
-
-    someRaces.push({
-      start: starts[i].time,
-      end: undefined
-    })
-  }
-
-  return startsRacesMap
-}
-
-export const createFinalRacesMap = (uniqueIds: Id[]): FinalRacesMap => {
-  return uniqueIds.reduce<FinalRacesMap>((acc, cur) => ({
-    ...acc,
-    [cur]: []
-  }), {})
-}
-
-export const createPointerMap = (uniqueIds: Id[]): IndexTrackingMap => {
-  // current index of what race entry we are looking at
-  return uniqueIds.reduce<IndexTrackingMap>((acc, cur) => ({
-    ...acc,
-    [cur]: 0
-  }), {})
-}
 
 export const buildEntry = {
   startless (endTime: number): FinalRaceEntry {
