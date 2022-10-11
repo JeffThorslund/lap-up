@@ -15,12 +15,16 @@ describe('header appending', () => {
   })
 })
 
-describe('parsing', () => {
+describe('parse raw data', () => {
   test('parse raw data into data structure', () => {
     expect(parseRawData('id\ttime\n48\t16')).toEqual([{
       id: '48',
       time: '16'
     }])
+  })
+
+  test('parse raw data into data structure', () => {
+    expect(parseRawData('id\ttime')).toEqual([])
   })
 
   test('wrong number of headers', () => {
@@ -46,5 +50,9 @@ describe('prepare data', () => {
       id: '1',
       time: 123
     }])
+  })
+
+  test('empty stings', () => {
+    expect(parseResults('', ['id', 'time'])).toEqual([])
   })
 })

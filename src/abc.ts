@@ -1,6 +1,6 @@
 import { DataStructure, FinalRaceEntry, FinalRacesMap, Id, TypedCSVData } from './types'
 
-export const iterateOverObj = (starts: TypedCSVData[], ends: TypedCSVData[]): FinalRacesMap => {
+export const buildResults = (starts: TypedCSVData[], ends: TypedCSVData[]): FinalRacesMap => {
   const uniqueIds: Id[] = createUniqueIds(starts, ends)
   const allRacerData: DataStructure = separateData(uniqueIds, starts, ends)
   const finalRacesMap: FinalRacesMap = {}
@@ -45,7 +45,9 @@ export const abc = (starts: number[], ends: number[]): FinalRaceEntry[] => {
   return finals
 }
 
-export const createUniqueIds = (starts: TypedCSVData[], ends: TypedCSVData[]): Id[] => [...new Set([...starts, ...ends].map(e => e.id))]
+export const createUniqueIds = (starts: TypedCSVData[], ends: TypedCSVData[]): Id[] => {
+  return [...new Set([...starts, ...ends].map(e => e.id))]
+}
 
 export const buildEntry = {
   startless (endTime: number): FinalRaceEntry {

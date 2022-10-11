@@ -1,9 +1,9 @@
-import { CSVInput, FinalRacesMap } from './types'
-import { parseEnds, parseStarts } from './parseResults'
-import { abc } from './abc'
+import { CSV, FinalRacesMap } from './types'
+import { buildResults } from './abc'
+import { parseResults } from './parseResults'
 
-export const index = (starts: CSVInput, ends: CSVInput): FinalRacesMap => {
-  const parsedStarts = parseStarts(starts)
-  const parsedEnds = parseEnds(ends)
-  return abc(parsedStarts, parsedEnds)
+export const index = (starts: CSV, ends: CSV): FinalRacesMap => {
+  const parsedStarts = parseResults(starts, ['time', 'id'])
+  const parsedEnds = parseResults(ends, ['time', 'id'])
+  return buildResults(parsedStarts, parsedEnds)
 }

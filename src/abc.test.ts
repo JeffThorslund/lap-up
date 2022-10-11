@@ -1,4 +1,4 @@
-import { abc, buildEntry, createUniqueIds, iterateOverObj } from './abc'
+import { abc, buildEntry, buildResults, createUniqueIds } from './abc'
 
 describe('create unique ids', () => {
   test('empty lists', () => {
@@ -71,11 +71,11 @@ describe('build entry', () => {
 
 describe('interate over obj', () => {
   test('empty lists', () => {
-    expect(iterateOverObj([], [])).toEqual({})
+    expect(buildResults([], [])).toEqual({})
   })
 
   test('single id, single end, no starts', () => {
-    expect(iterateOverObj([], [{
+    expect(buildResults([], [{
       id: '1',
       time: 1
     }])).toEqual({
@@ -87,7 +87,7 @@ describe('interate over obj', () => {
   })
 
   test('single id, several ends, no starts', () => {
-    expect(iterateOverObj([], [{
+    expect(buildResults([], [{
       id: '1',
       time: 1
     }, {
@@ -105,7 +105,7 @@ describe('interate over obj', () => {
   })
 
   test('single id, several start', () => {
-    expect(iterateOverObj([{
+    expect(buildResults([{
       id: '1',
       time: 1
     }, {
@@ -123,7 +123,7 @@ describe('interate over obj', () => {
   })
 
   test('regular case', () => {
-    expect(iterateOverObj([{
+    expect(buildResults([{
       id: '1',
       time: 100
     }], [{
@@ -138,7 +138,7 @@ describe('interate over obj', () => {
   })
 
   test('traverse several starts', () => {
-    expect(iterateOverObj([{
+    expect(buildResults([{
       id: '1',
       time: 10
     }, {
@@ -159,7 +159,7 @@ describe('interate over obj', () => {
   })
 })
 
-describe('', () => {
+describe('single person iterator', () => {
   test('regular case', () => {
     expect(abc([10, 20, 30], [15, 25, 35])).toEqual([{
       start: 10,

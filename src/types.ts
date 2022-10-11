@@ -1,6 +1,6 @@
 export type Id = string
 
-export type CSVInput = string
+export type CSV = string
 
 export interface CSVData {
   id: Id
