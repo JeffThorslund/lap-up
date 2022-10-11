@@ -1,4 +1,4 @@
-import { appendHeadersToData, enumerateResults, parseRawData, parseResults } from './parseResults'
+import { appendHeadersToData, enumerateStartResults, parseRawData, parseResults } from './parseResults'
 
 describe('header appending', () => {
   test('add headers to raw data', () => {
@@ -34,7 +34,7 @@ describe('parse raw data', () => {
 
 describe('enumerate data', () => {
   test('add START enum to data', () => {
-    expect(enumerateResults([{
+    expect(enumerateStartResults([{
       time: '123',
       id: '1'
     }])).toEqual([{

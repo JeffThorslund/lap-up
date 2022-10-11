@@ -1,10 +1,30 @@
 import { parse } from 'papaparse'
-import { CSV, CSVData, Header, TypedCSVData } from './types'
+import {
+  CSV,
+  EndTimingEvent,
+  EndTypedTimingEvent,
+  Header,
+  StartTimingEvent,
+  StartTypedTimingEvent,
+  TypedTimingEvent
+} from './types'
 
-export const parseResults = (rawData: CSV, headers: Header[]): TypedCSVData[] => {
+export const parseStartResults = (rawData: CSV, headers: Header[]): StartTypedTimingEvent[] => {
   const dataWithHeaders = appendHeadersToData(headers, rawData)
-  const parsedData = parseRawData(dataWithHeaders)
-  return enumerateResults(parsedData)
+  const parsedData = parseRawData<StartTimingEvent>(dataWithHeaders)
+  return enumerateStartResults(parsedData)
+}
+
+export const parseEndResults = (rawData: CSV, headers: Header[]): EndTypedTimingEvent[] => {
+  const dataWithHeaders = appendHeadersToData(headers, rawData)
+  const parsedData = parseRawData<EndTimingEvent>(dataWithHeaders)
+  return enumerateEndResults(parsedData)
+}
+
+export const parseResults = (rawData: CSV, headers: Header[]): TypedTimingEvent[] => {
+  const dataWithHeaders = appendHeadersToData(headers, rawData)
+  const parsedData = parseRawData<StartTimingEvent>(dataWithHeaders)
+  return enumerateStartResults(parsedData)
 }
 
 export const appendHeadersToData = (headers: Header[], rawData: CSV): string => {
@@ -21,8 +41,8 @@ export const appendHeadersToData = (headers: Header[], rawData: CSV): string => 
   return joinedHeader + '\n' + rawData
 }
 
-export const parseRawData = (rawData: CSV): CSVData[] => {
-  const result = parse<CSVData>(rawData, {
+export const parseRawData = <T> (rawData: CSV): T[] => {
+  const result = parse<T>(rawData, {
     header: true,
     delimiter: '\t'
   })
@@ -34,9 +54,18 @@ export const parseRawData = (rawData: CSV): CSVData[] => {
   return result.data
 }
 
-export const enumerateResults = (entries: CSVData[]): TypedCSVData[] => {
+export const enumerateStartResults = (entries: StartTimingEvent[]): StartTypedTimingEvent[] => {
   return entries.map(e => ({
     id: e.id,
     time: Number(e.time)
+  }))
+}
+
+export const enumerateEndResults = (entries: EndTimingEvent[]): EndTypedTimingEvent[] => {
+  return entries.map(e => ({
+    id: e.id,
+    time: Number(e.time),
+    touchedGates: Number(e.touchedGates),
+    missedGates: Number(e.missedGates)
   }))
 }
