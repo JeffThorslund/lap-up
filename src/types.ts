@@ -61,3 +61,12 @@ export interface StartRecord extends Omit<StartTypedTimingEvent, 'id'> {
 
 export interface EndRecord extends Omit<EndTypedTimingEvent, 'id'> {
 }
+
+export interface NamesMap {
+  [key: Id]: string
+}
+
+export interface NameRecord {
+  id: Id
+  name: string
+}

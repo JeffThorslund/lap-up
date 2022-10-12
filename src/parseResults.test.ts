@@ -1,4 +1,5 @@
-import { appendHeadersToData, enumerateStartResults, parseRawData, parseResults } from './parseResults'
+import { enumerateStartResults, parseResults } from './parseResults'
+import { appendHeadersToData, parseRawData } from './_utils/parse'
 
 describe('header appending', () => {
   test('add headers to raw data', () => {

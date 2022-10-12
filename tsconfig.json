@@ -17,6 +17,6 @@
     "watch": true
   },
   "include": [
-    "src/**/*"
-  ]
+    "src/**/*.ts"
+  ],
 }

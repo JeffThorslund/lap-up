@@ -1,4 +1,3 @@
-import { parse } from 'papaparse'
 import {
   CSV,
   EndTimingEvent,
@@ -8,6 +7,7 @@ import {
   StartTypedTimingEvent,
   TypedTimingEvent
 } from './types'
+import { appendHeadersToData, parseRawData } from './_utils/parse'
 
 export const parseStartResults = (rawData: CSV, headers: Header[]): StartTypedTimingEvent[] => {
   const dataWithHeaders = appendHeadersToData(headers, rawData)
@@ -25,33 +25,6 @@ export const parseResults = (rawData: CSV, headers: Header[]): TypedTimingEvent[
   const dataWithHeaders = appendHeadersToData(headers, rawData)
   const parsedData = parseRawData<StartTimingEvent>(dataWithHeaders)
   return enumerateStartResults(parsedData)
-}
-
-export const appendHeadersToData = (headers: Header[], rawData: CSV): string => {
-  if (headers.length === 0) {
-    throw new Error('You must attach headers')
-  }
-
-  const joinedHeader = headers.join('\t')
-
-  if (rawData.length === 0) {
-    return joinedHeader
-  }
-
-  return joinedHeader + '\n' + rawData
-}
-
-export const parseRawData = <T> (rawData: CSV): T[] => {
-  const result = parse<T>(rawData, {
-    header: true,
-    delimiter: '\t'
-  })
-
-  if (result.errors.length > 0) {
-    throw new Error(result.errors.map(e => e.message).join('; '))
-  }
-
-  return result.data
 }
 
 export const enumerateStartResults = (entries: StartTimingEvent[]): StartTypedTimingEvent[] => {
