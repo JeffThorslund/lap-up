@@ -1,4 +1,4 @@
-import { parseNames } from './index'
+import { parseNames } from './names'
 
 describe('name parsing', () => {
   test('empty string', () => {

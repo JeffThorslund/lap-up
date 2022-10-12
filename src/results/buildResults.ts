@@ -3,18 +3,18 @@ import {
   EndRecord,
   EndTypedTimingEvent,
   FinalRaceEntry,
-  FinalRacesMap,
   Id,
   InitialPassRaceEntry,
+  ResultsMap,
   StartRecord,
   StartTypedTimingEvent,
   TypedTimingEvent
-} from './types'
+} from '../types'
 
-export const buildResults = (starts: StartTypedTimingEvent[], ends: EndTypedTimingEvent[]): FinalRacesMap => {
+export const buildResults = (starts: StartTypedTimingEvent[], ends: EndTypedTimingEvent[]): ResultsMap => {
   const uniqueIds: Id[] = createUniqueIds(starts, ends)
   const allRacerData: DataStructure = separateData(uniqueIds, starts, ends)
-  const finalRacesMap: FinalRacesMap = {}
+  const finalRacesMap: ResultsMap = {}
   for (const id in allRacerData) {
     const racerData = allRacerData[id]
     finalRacesMap[id] = abc(racerData.starts, racerData.ends)

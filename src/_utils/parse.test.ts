@@ -1,5 +1,4 @@
-import { enumerateStartResults, parseResults } from './parseResults'
-import { appendHeadersToData, parseRawData } from './_utils/parse'
+import { appendHeadersToData, parseRawData } from './parse'
 
 describe('header appending', () => {
   test('add headers to raw data', () => {
@@ -30,30 +29,5 @@ describe('parse raw data', () => {
 
   test('wrong number of headers', () => {
     expect(() => parseRawData('id\n48\t16')).toThrow()
-  })
-})
-
-describe('enumerate data', () => {
-  test('add START enum to data', () => {
-    expect(enumerateStartResults([{
-      time: '123',
-      id: '1'
-    }])).toEqual([{
-      id: '1',
-      time: 123
-    }])
-  })
-})
-
-describe('prepare data', () => {
-  test('base', () => {
-    expect(parseResults('1\t123', ['id', 'time'])).toEqual([{
-      id: '1',
-      time: 123
-    }])
-  })
-
-  test('empty stings', () => {
-    expect(parseResults('', ['id', 'time'])).toEqual([])
   })
 })

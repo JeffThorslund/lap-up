@@ -1,5 +1,5 @@
 import { abc, buildEntry, buildResults, createUniqueIds } from './buildResults'
-import { EndRecord, StartRecord } from './types'
+import { EndRecord, StartRecord } from '../types'
 
 describe('create unique ids', () => {
   test('empty lists', () => {

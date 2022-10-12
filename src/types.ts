@@ -36,7 +36,7 @@ export interface EndTypedTimingEvent extends TypedTimingEvent {
 
 export type Header = string
 
-export interface FinalRacesMap {
+export interface ResultsMap {
   [key: string]: FinalRaceEntry[]
 }
 
@@ -69,4 +69,8 @@ export interface NamesMap {
 export interface NameRecord {
   id: Id
   name: string
+}
+
+export interface Selectors {
+  ordered: any
 }
