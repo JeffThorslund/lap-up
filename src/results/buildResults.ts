@@ -1,16 +1,16 @@
 import {
   DataStructure,
   EndRecord,
-  EndTypedTimingEvent,
+  EndTimingEvent,
   FinalRaceEntry,
   Id,
   InitialPassRaceEntry,
   ResultsMap,
   StartRecord,
-  StartTypedTimingEvent
+  StartTimingEvent
 } from '../types'
 
-export const buildResults = (starts: StartTypedTimingEvent[], ends: EndTypedTimingEvent[]): ResultsMap => {
+export const buildResults = (starts: StartTimingEvent[], ends: EndTimingEvent[]): ResultsMap => {
   const uniqueIds: Id[] = createUniqueIds(starts, ends)
   const allRacerData: DataStructure = separateData(uniqueIds, starts, ends)
   const finalRacesMap: ResultsMap = {}
@@ -53,7 +53,7 @@ export const abc = (starts: StartRecord[], ends: EndRecord[]): FinalRaceEntry[] 
   return finals
 }
 
-export const createUniqueIds = (starts: StartTypedTimingEvent[], ends: EndTypedTimingEvent[]): Id[] => {
+export const createUniqueIds = (starts: StartTimingEvent[], ends: EndTimingEvent[]): Id[] => {
   return [...new Set([...starts, ...ends].map(e => e.id))]
 }
 
@@ -84,7 +84,7 @@ export const buildEntry = {
   }
 }
 
-export const separateData = (uniqueIds: Id[], starts: StartTypedTimingEvent[], ends: EndTypedTimingEvent[]): DataStructure => {
+export const separateData = (uniqueIds: Id[], starts: StartTimingEvent[], ends: EndTimingEvent[]): DataStructure => {
   const data: DataStructure = {}
 
   for (const id of uniqueIds) {

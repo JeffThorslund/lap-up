@@ -1,10 +1,10 @@
-import { CSV, Selectors } from './types'
-import { parseNames } from './names/names'
-import { parseResults } from './results'
+import { EndTimingEvent, NameRecord, Selectors, StartTimingEvent } from './types'
 import { selectors } from './selectors'
+import { createNamesMap } from './names/names'
+import { buildResults } from './results/buildResults'
 
-export const index = (starts: CSV, ends: CSV, names: CSV): Selectors => {
-  const parsedNames = parseNames(names)
-  const parsedResults = parseResults(starts, ends)
-  return selectors(parsedResults, parsedNames)
+export const index = (starts: StartTimingEvent[], ends: EndTimingEvent[], names: NameRecord[]): Selectors => {
+  const namesMap = createNamesMap(names)
+  const resultsMap = buildResults(starts, ends)
+  return selectors(resultsMap, namesMap)
 }

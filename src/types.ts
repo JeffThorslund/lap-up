@@ -1,26 +1,15 @@
 export type Id = string
-export type CSV = string
-export type Header = string
 
-/** Untyped Timing Events **/
+/** Timing Events **/
 
-export interface TimingEvent<T> {
+export interface TimingEvent {
   id: Id
-  time: T
+  time: number
 }
 
-export type StartTimingEvent = TimingEvent<string>
+export type StartTimingEvent = TimingEvent
 
-export interface EndTimingEvent extends TimingEvent<string> {
-  touchedGates: string
-  missedGates: string
-}
-
-/** Typed Timing Events **/
-
-export type StartTypedTimingEvent = TimingEvent<number>
-
-export interface EndTypedTimingEvent extends TimingEvent<number> {
+export interface EndTimingEvent extends TimingEvent {
   touchedGates: number
   missedGates: number
 }
@@ -47,10 +36,10 @@ export interface DataStructure {
   [key: string]: { starts: StartRecord[], ends: EndRecord[] }
 }
 
-export interface StartRecord extends Omit<StartTypedTimingEvent, 'id'> {
+export interface StartRecord extends Omit<StartTimingEvent, 'id'> {
 }
 
-export interface EndRecord extends Omit<EndTypedTimingEvent, 'id'> {
+export interface EndRecord extends Omit<EndTimingEvent, 'id'> {
 }
 
 export interface NamesMap {
