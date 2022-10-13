@@ -1,3 +1,6 @@
+import { PersonalResult } from './selectors/personal'
+import { OverallRaceResult } from './selectors/overall'
+
 export type Id = string
 
 /** Timing Events **/
@@ -52,10 +55,12 @@ export interface NameRecord {
 }
 
 export interface Selectors {
-  ordered: any
+  ordered: OrderedSelectorResults[]
+  personal: PersonalResult[]
+  overall: OverallRaceResult
 }
 
-export interface Final {
+export interface OrderedSelectorResults {
   id: Id
   name: string
   results: Result[]

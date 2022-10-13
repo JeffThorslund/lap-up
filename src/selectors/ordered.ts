@@ -1,13 +1,13 @@
-import { Final, FinalRaceEntry, Id, NamesMap, PenaltyConfig, Result, ResultsMap } from '../types'
+import { FinalRaceEntry, Id, NamesMap, OrderedSelectorResults, PenaltyConfig, Result, ResultsMap } from '../types'
 
-export const ordered = (data: ResultsMap, names: NamesMap): Final[] => {
+export const ordered = (data: ResultsMap, names: NamesMap): OrderedSelectorResults[] => {
   return Object.entries(data)
-    .map<Final>(appendNameAndParseResults(names))
+    .map<OrderedSelectorResults>(appendNameAndParseResults(names))
     .sort((a, b) => sortByBestResultIfExists(a.results[0], b.results[0]))
 }
 
 const appendNameAndParseResults = (names: NamesMap) => {
-  return ([id, results]: [id: Id, results: FinalRaceEntry[]]): Final => {
+  return ([id, results]: [id: Id, results: FinalRaceEntry[]]): OrderedSelectorResults => {
     return {
       id,
       name: names[id],
