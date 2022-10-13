@@ -1,3 +1,4 @@
+import * as types from './types'
 import { EndTimingEvent, NameRecord, Selectors, StartTimingEvent } from './types'
 import { selectors } from './selectors'
 import { createNamesMap } from './names/names'
@@ -8,3 +9,5 @@ export const index = (starts: StartTimingEvent[], ends: EndTimingEvent[], names:
   const resultsMap = buildResults(starts, ends)
   return selectors(resultsMap, namesMap)
 }
+
+export { types }
