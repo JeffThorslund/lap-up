@@ -7,8 +7,7 @@ import {
   InitialPassRaceEntry,
   ResultsMap,
   StartRecord,
-  StartTypedTimingEvent,
-  TypedTimingEvent
+  StartTypedTimingEvent
 } from '../types'
 
 export const buildResults = (starts: StartTypedTimingEvent[], ends: EndTypedTimingEvent[]): ResultsMap => {
@@ -54,7 +53,7 @@ export const abc = (starts: StartRecord[], ends: EndRecord[]): FinalRaceEntry[] 
   return finals
 }
 
-export const createUniqueIds = (starts: TypedTimingEvent[], ends: TypedTimingEvent[]): Id[] => {
+export const createUniqueIds = (starts: StartTypedTimingEvent[], ends: EndTypedTimingEvent[]): Id[] => {
   return [...new Set([...starts, ...ends].map(e => e.id))]
 }
 

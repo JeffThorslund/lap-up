@@ -1,10 +1,10 @@
 import { CSV, NameRecord, NamesMap } from '../types'
-import { appendHeadersToData, parseRawData } from '../_utils/parse'
+import { appendHeadersToCSV, parseRawData } from '../_utils/parse'
 
-export const parseNames = (nameData: CSV): NamesMap => {
-  const nameDataWithHeaders = appendHeadersToData(['id', 'name'], nameData)
-  const parsedData = parseRawData<NameRecord>(nameDataWithHeaders)
-  return createNamesMap(parsedData)
+export const parseNames = (names: CSV): NamesMap => {
+  const namesWithHeaders = appendHeadersToCSV(['id', 'name'], names)
+  const parsedNames = parseRawData<NameRecord>(namesWithHeaders)
+  return createNamesMap(parsedNames)
 }
 
 const createNamesMap = (names: NameRecord[]): NamesMap =>

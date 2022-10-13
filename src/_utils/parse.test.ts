@@ -1,17 +1,17 @@
-import { appendHeadersToData, parseRawData } from './parse'
+import { appendHeadersToCSV, parseRawData } from './parse'
 
 describe('header appending', () => {
   test('add headers to raw data', () => {
-    expect(appendHeadersToData(['id', 'time'], '48\t1653746491')).toEqual('id\ttime\n48\t1653746491')
+    expect(appendHeadersToCSV(['id', 'time'], '48\t1653746491')).toEqual('id\ttime\n48\t1653746491')
   })
 
   test('add wrong number of headers to raw data', () => {
     // this is allowed, and will be caught in parse
-    expect(appendHeadersToData(['id'], '48\t1653746491')).toEqual('id\n48\t1653746491')
+    expect(appendHeadersToCSV(['id'], '48\t1653746491')).toEqual('id\n48\t1653746491')
   })
 
   test('add empty headers', () => {
-    expect(() => appendHeadersToData([], '48\t1653746491')).toThrow('You must attach headers')
+    expect(() => appendHeadersToCSV([], '48\t1653746491')).toThrow('You must attach headers')
   })
 })
 

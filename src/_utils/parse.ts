@@ -1,7 +1,7 @@
 import { CSV, Header } from '../types'
 import { parse } from 'papaparse'
 
-export const appendHeadersToData = (headers: Header[], rawData: CSV): string => {
+export const appendHeadersToCSV = (headers: Header[], rawData: CSV): string => {
   if (headers.length === 0) {
     throw new Error('You must attach headers')
   }

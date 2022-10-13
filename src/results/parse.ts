@@ -1,16 +1,16 @@
 import { CSV, EndTimingEvent, EndTypedTimingEvent, Header, StartTimingEvent, StartTypedTimingEvent } from '../types'
-import { appendHeadersToData, parseRawData } from '../_utils/parse'
+import { appendHeadersToCSV, parseRawData } from '../_utils/parse'
 
 export const parse = {
-  start (rawData: CSV, headers: Header[]): StartTypedTimingEvent[] {
-    const dataWithHeaders = appendHeadersToData(headers, rawData)
-    const parsedData = parseRawData<StartTimingEvent>(dataWithHeaders)
-    return enumerateResults.start(parsedData)
+  start (timingEvents: CSV, headers: Header[]): StartTypedTimingEvent[] {
+    const timingEventsWithHeaders = appendHeadersToCSV(headers, timingEvents)
+    const parsedTimingEvents = parseRawData<StartTimingEvent>(timingEventsWithHeaders)
+    return enumerateResults.start(parsedTimingEvents)
   },
-  end (rawData: CSV, headers: Header[]): EndTypedTimingEvent[] {
-    const dataWithHeaders = appendHeadersToData(headers, rawData)
-    const parsedData = parseRawData<EndTimingEvent>(dataWithHeaders)
-    return enumerateResults.end(parsedData)
+  end (timingEvents: CSV, headers: Header[]): EndTypedTimingEvent[] {
+    const timingEventsWithHeaders = appendHeadersToCSV(headers, timingEvents)
+    const parsedTimingEvents = parseRawData<EndTimingEvent>(timingEventsWithHeaders)
+    return enumerateResults.end(parsedTimingEvents)
   }
 }
 

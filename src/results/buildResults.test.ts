@@ -20,11 +20,15 @@ describe('create unique ids', () => {
   test('only ends', () => {
     expect(createUniqueIds([], [{
       id: '1',
-      time: 1
+      time: 1,
+      missedGates: 0,
+      touchedGates: 0
     },
     {
       id: '2',
-      time: 1
+      time: 1,
+      missedGates: 0,
+      touchedGates: 0
     }])).toEqual(['1', '2'])
   })
 
@@ -38,11 +42,15 @@ describe('create unique ids', () => {
       time: 1
     }], [{
       id: '1',
-      time: 3
+      time: 3,
+      missedGates: 0,
+      touchedGates: 0
     },
     {
       id: '2',
-      time: 4
+      time: 4,
+      missedGates: 0,
+      touchedGates: 0
     }])).toEqual(['1', '2'])
   })
 })

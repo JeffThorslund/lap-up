@@ -1,40 +1,31 @@
 export type Id = string
-
 export type CSV = string
+export type Header = string
 
-// Timing Event
+/** Untyped Timing Events **/
 
-export interface TimingEvent {
+export interface TimingEvent<T> {
   id: Id
-  time: string
+  time: T
 }
 
-export interface StartTimingEvent extends TimingEvent {
-}
+export type StartTimingEvent = TimingEvent<string>
 
-export interface EndTimingEvent extends TimingEvent {
+export interface EndTimingEvent extends TimingEvent<string> {
   touchedGates: string
   missedGates: string
 }
 
-// Typed Timing Event
+/** Typed Timing Events **/
 
-export interface TypedTimingEvent {
-  id: Id
-  time: number
-}
+export type StartTypedTimingEvent = TimingEvent<number>
 
-export interface StartTypedTimingEvent extends TypedTimingEvent {
-}
-
-export interface EndTypedTimingEvent extends TypedTimingEvent {
+export interface EndTypedTimingEvent extends TimingEvent<number> {
   touchedGates: number
   missedGates: number
 }
 
 // Other
-
-export type Header = string
 
 export interface ResultsMap {
   [key: string]: FinalRaceEntry[]
