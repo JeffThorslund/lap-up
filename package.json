@@ -1,11 +1,12 @@
 {
   "name": "slalom-parser",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "main": "lib/index.js",
   "scripts": {
     "test": "jest --watch",
     "start": "node lib/index.js",
-    "lint": "eslint --fix"
+    "lint": "eslint --fix",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/jest": "^29.1.1",
