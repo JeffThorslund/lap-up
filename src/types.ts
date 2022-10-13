@@ -74,3 +74,19 @@ export interface NameRecord {
 export interface Selectors {
   ordered: any
 }
+
+export interface Final {
+  id: Id
+  name: string
+  results: Result[]
+}
+
+export interface Result extends FinalRaceEntry {
+  time: number | null
+  adjustedTime: number | null
+}
+
+export interface PenaltyConfig {
+  number: number | null
+  penalty: number
+}
