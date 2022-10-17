@@ -1,26 +1,25 @@
 import { getAdjustedTime, getTime, getTotalPenaltyTime, ordered, sortNonIncreasing } from './ordered'
-import { NamesMap, PenaltyConfig, ResultsMap } from '../types'
+import { PenaltyConfig, ResultRecords } from '../types'
 
-const names: NamesMap = {
-  1: 'jeff'
-}
-
-const results: ResultsMap = {
-  1: [{
-    start: 1,
-    end: 15,
-    touchedGates: 2,
-    missedGates: 0
-  }]
+const results: ResultRecords = {
+  1: {
+    name: 'jeff',
+    races: [{
+      start: 1,
+      end: 15,
+      touchedGates: 2,
+      missedGates: 0
+    }]
+  }
 }
 
 describe('end to end', () => {
   test('empty dataset', () => {
-    expect(ordered({}, {})).toEqual([])
+    expect(ordered({})).toEqual([])
   })
 
   test('single user', () => {
-    expect(ordered(results, names)).toEqual([{
+    expect(ordered(results)).toEqual([{
       id: '1',
       name: 'jeff',
       results: [{
@@ -35,48 +34,53 @@ describe('end to end', () => {
   })
 
   test('example race', () => {
-    const names: NamesMap = {
-      1: 'jeff',
-      2: 'joey',
-      3: 'sam',
-      4: 'archie'
-    }
-
-    const results: ResultsMap = {
-      1: [{
-        start: 1,
-        end: 1000,
-        touchedGates: 2,
-        missedGates: 0
-      }, {
-        start: 2000,
-        end: 2100,
-        touchedGates: 0,
-        missedGates: 0
-      }],
-      2: [{
-        start: 3000,
-        end: 3200,
-        touchedGates: null,
-        missedGates: null
-      }],
-      3: [],
-      4: [
-        {
-          start: null,
-          end: 4000,
+    const results: ResultRecords = {
+      1: {
+        name: 'jeff',
+        races: [{
+          start: 1,
+          end: 1000,
           touchedGates: 2,
           missedGates: 0
         }, {
-          start: 1500,
-          end: 6000,
-          touchedGates: 2,
+          start: 2000,
+          end: 2100,
+          touchedGates: 0,
           missedGates: 0
-        }
-      ]
+        }]
+      },
+      2: {
+        name: 'joey',
+        races: [{
+          start: 3000,
+          end: 3200,
+          touchedGates: null,
+          missedGates: null
+        }]
+      },
+      3: {
+        name: 'jim',
+        races: []
+      },
+      4: {
+        name: 'archie',
+        races: [
+          {
+            start: null,
+            end: 4000,
+            touchedGates: 2,
+            missedGates: 0
+          }, {
+            start: 1500,
+            end: 6000,
+            touchedGates: 2,
+            missedGates: 0
+          }
+        ]
+      }
     }
 
-    expect(ordered(results, names)).toEqual([
+    expect(ordered(results)).toEqual([
       {
         id: '1',
         name: 'jeff',
@@ -137,7 +141,7 @@ describe('end to end', () => {
       },
       {
         id: '3',
-        name: 'sam',
+        name: 'jim',
         results: []
       }
     ])

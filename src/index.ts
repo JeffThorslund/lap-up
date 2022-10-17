@@ -1,13 +1,11 @@
 import * as types from './types'
 import { EndTimingEvent, NameRecord, Selectors, StartTimingEvent } from './types'
 import { selectors } from './selectors'
-import { createNamesMap } from './names/names'
 import { buildResults } from './results/buildResults'
 
-export const index = (starts: StartTimingEvent[], ends: EndTimingEvent[], names: NameRecord[]): Selectors => {
-  const namesMap = createNamesMap(names)
-  const resultsMap = buildResults(starts, ends)
-  return selectors(resultsMap, namesMap)
+export const index = (names: NameRecord[], starts: StartTimingEvent[], ends: EndTimingEvent[]): Selectors => {
+  const resultsMap = buildResults(names, starts, ends)
+  return selectors(resultsMap)
 }
 
 export { types }

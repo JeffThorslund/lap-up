@@ -1,59 +1,23 @@
-import { abc, buildEntry, buildResults, createUniqueIds } from './buildResults'
-import { EndRecord, StartRecord } from '../types'
+import { buildEntry, buildResults, computeRaceInstances } from './buildResults'
+import {
+  AnonymousEndTimingEvent,
+  AnonymousStartTimingEvent,
+  EndTimingEvent,
+  ResultRecords,
+  StartTimingEvent
+} from '../types'
 
-describe('create unique ids', () => {
-  test('empty lists', () => {
-    expect(createUniqueIds([], [])).toEqual([])
-  })
+const buildResultsWithNames = (starts: StartTimingEvent[], ends: EndTimingEvent[]): ResultRecords => {
+  const names = [{
+    id: '0',
+    name: 'Jeff'
+  }, {
+    id: '1',
+    name: 'Kyle'
+  }]
 
-  test('only starts', () => {
-    expect(createUniqueIds([{
-      id: '1',
-      time: 1
-    },
-    {
-      id: '2',
-      time: 1
-    }], [])).toEqual(['1', '2'])
-  })
-
-  test('only ends', () => {
-    expect(createUniqueIds([], [{
-      id: '1',
-      time: 1,
-      missedGates: 0,
-      touchedGates: 0
-    },
-    {
-      id: '2',
-      time: 1,
-      missedGates: 0,
-      touchedGates: 0
-    }])).toEqual(['1', '2'])
-  })
-
-  test('starts and ends', () => {
-    expect(createUniqueIds([{
-      id: '1',
-      time: 1
-    },
-    {
-      id: '2',
-      time: 1
-    }], [{
-      id: '1',
-      time: 3,
-      missedGates: 0,
-      touchedGates: 0
-    },
-    {
-      id: '2',
-      time: 4,
-      missedGates: 0,
-      touchedGates: 0
-    }])).toEqual(['1', '2'])
-  })
-})
+  return buildResults(names, starts, ends)
+}
 
 describe('build entry', () => {
   test('startless', () => {
@@ -94,27 +58,45 @@ describe('build entry', () => {
 
 describe('interate over obj', () => {
   test('empty lists', () => {
-    expect(buildResults([], [])).toEqual({})
+    expect(buildResultsWithNames([], [])).toEqual({
+      0: {
+        name: 'Jeff',
+        races: []
+      },
+      1: {
+        name: 'Kyle',
+        races: []
+      }
+    })
   })
 
   test('single id, single end, no starts', () => {
-    expect(buildResults([], [{
+    expect(buildResultsWithNames([], [{
       id: '1',
       time: 1,
       missedGates: 0,
       touchedGates: 0
     }])).toEqual({
-      1: [{
-        start: null,
-        end: 1,
-        missedGates: 0,
-        touchedGates: 0
-      }]
+      0: {
+        name: 'Jeff',
+        races: []
+      },
+      1: {
+        name: 'Kyle',
+        races: [
+          {
+            end: 1,
+            missedGates: 0,
+            start: null,
+            touchedGates: 0
+          }
+        ]
+      }
     })
   })
 
   test('single id, several ends, no starts', () => {
-    expect(buildResults([], [{
+    expect(buildResultsWithNames([], [{
       id: '1',
       time: 1,
       missedGates: 0,
@@ -125,44 +107,62 @@ describe('interate over obj', () => {
       missedGates: 0,
       touchedGates: 0
     }])).toEqual({
-      1: [{
-        start: null,
-        end: 1,
-        missedGates: 0,
-        touchedGates: 0
-      }, {
-        start: null,
-        end: 10,
-        missedGates: 0,
-        touchedGates: 0
-      }]
+      0: {
+        name: 'Jeff',
+        races: []
+      },
+      1: {
+        name: 'Kyle',
+        races: [
+          {
+            end: 1,
+            missedGates: 0,
+            start: null,
+            touchedGates: 0
+          },
+          {
+            end: 10,
+            missedGates: 0,
+            start: null,
+            touchedGates: 0
+          }
+        ]
+      }
     })
   })
 
   test('single id, several start', () => {
-    expect(buildResults([{
+    expect(buildResultsWithNames([{
       id: '1',
       time: 1
     }, {
       id: '1',
       time: 2
     }], [])).toEqual({
-      1: [{
-        start: 1,
-        end: null,
-        missedGates: null,
-        touchedGates: null
-      }, {
-        start: 2,
-        end: null,
-        missedGates: null,
-        touchedGates: null
-      }]
+      0: {
+        name: 'Jeff',
+        races: []
+      },
+      1: {
+        name: 'Kyle',
+        races: [{
+          start: 1,
+          end: null,
+          missedGates: null,
+          touchedGates: null
+        }, {
+          start: 2,
+          end: null,
+          missedGates: null,
+          touchedGates: null
+        }]
+      }
+
     })
   })
 
   test('regular case', () => {
-    expect(buildResults([{
+    expect(buildResultsWithNames([{
       id: '1',
       time: 100
     }], [{
@@ -171,17 +171,24 @@ describe('interate over obj', () => {
       missedGates: 0,
       touchedGates: 0
     }])).toEqual({
-      1: [{
-        start: 100,
-        end: 200,
-        missedGates: 0,
-        touchedGates: 0
-      }]
+      0: {
+        name: 'Jeff',
+        races: []
+      },
+      1: {
+        name: 'Kyle',
+        races: [{
+          start: 100,
+          end: 200,
+          missedGates: 0,
+          touchedGates: 0
+        }]
+      }
     })
   })
 
   test('traverse several starts', () => {
-    expect(buildResults([{
+    expect(buildResultsWithNames([{
       id: '1',
       time: 10
     }, {
@@ -193,34 +200,44 @@ describe('interate over obj', () => {
       missedGates: 0,
       touchedGates: 0
     }])).toEqual({
-      1: [{
-        start: 10,
-        end: null,
-        missedGates: null,
-        touchedGates: null
-      }, {
-        start: 20,
-        end: 25,
-        missedGates: 0,
-        touchedGates: 0
-      }]
+      0: {
+        name: 'Jeff',
+        races: []
+      },
+      1: {
+        name: 'Kyle',
+        races: [{
+          start: 10,
+          end: null,
+          missedGates: null,
+          touchedGates: null
+        }, {
+          start: 20,
+          end: 25,
+          missedGates: 0,
+          touchedGates: 0
+        }]
+      }
     })
   })
 })
 
 describe('single person iterator', () => {
-  const s = (num: number): StartRecord => ({
+  const s = (num: number): AnonymousStartTimingEvent => ({
     time: num
   })
 
-  const e = (num: number): EndRecord => ({
+  const e = (num: number): AnonymousEndTimingEvent => ({
     time: num,
     missedGates: 0,
     touchedGates: 0
   })
 
   test('regular case', () => {
-    expect(abc([10, 20, 30].map(s), [15, 25, 35].map(e))).toEqual([{
+    expect(computeRaceInstances({
+      starts: [10, 20, 30].map(s),
+      ends: [15, 25, 35].map(e)
+    })).toEqual([{
       start: 10,
       end: 15,
       missedGates: 0,
@@ -239,7 +256,10 @@ describe('single person iterator', () => {
   })
 
   test('all starts', () => {
-    expect(abc([10, 20, 30].map(s), [])).toEqual([{
+    expect(computeRaceInstances({
+      starts: [10, 20, 30].map(s),
+      ends: []
+    })).toEqual([{
       start: 10,
       end: null,
       missedGates: null,
@@ -258,7 +278,10 @@ describe('single person iterator', () => {
   })
 
   test('all ends', () => {
-    expect(abc([], [15, 25, 35].map(e))).toEqual([{
+    expect(computeRaceInstances({
+      starts: [],
+      ends: [15, 25, 35].map(e)
+    })).toEqual([{
       start: null,
       end: 15,
       missedGates: 0,
@@ -285,9 +308,10 @@ describe('single person iterator', () => {
       }, () => rand(maxValue))
     }
 
-    expect(() => abc(
-      createArray(100, 1000).map(s),
-      createArray(100, 1000).map(e)
+    expect(() => computeRaceInstances({
+      starts: createArray(100, 1000).map(s),
+      ends: createArray(100, 1000).map(e)
+    }
     )).not.toThrow()
   })
 })

@@ -1,13 +1,13 @@
-import { NamesMap, ResultsMap } from '../types'
+import { ResultRecords } from '../types'
 
 export interface OverallRaceResult {
   numberOfCompetitors: number
   numberOfRaces: number
 }
 
-export const overall = (data: ResultsMap, names: NamesMap): OverallRaceResult => {
+export const overall = (data: ResultRecords): OverallRaceResult => {
   return {
-    numberOfCompetitors: Object.keys(names).length,
-    numberOfRaces: Object.values(data).reduce<number>((acc, cur) => acc + cur.length, 0)
+    numberOfCompetitors: Object.keys(data).length,
+    numberOfRaces: Object.values(data).reduce<number>((acc, cur) => acc + cur.races.length, 0)
   }
 }

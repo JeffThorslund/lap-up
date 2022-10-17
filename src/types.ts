@@ -2,12 +2,14 @@ import { PersonalResult } from './selectors/personal'
 import { OverallRaceResult } from './selectors/overall'
 
 export type Id = string
+export type Name = string
+export type Time = number
 
-/** Timing Events **/
+/** Timing Events represent the data recorded on paper by the persons timing the event **/
 
-export interface TimingEvent {
+interface TimingEvent {
   id: Id
-  time: number
+  time: Time
 }
 
 export type StartTimingEvent = TimingEvent
@@ -17,41 +19,52 @@ export interface EndTimingEvent extends TimingEvent {
   missedGates: number
 }
 
-// Other
-
-export interface ResultsMap {
-  [key: string]: FinalRaceEntry[]
+export interface NameRecord {
+  id: Id
+  name: Name
 }
 
-export interface InitialPassRaceEntry {
-  start: number
-  end: undefined
+/** UnComputed Data Structure **/
+
+export type TimingEventRecords = Record<Id, TimingEventRecord>
+
+interface TimingEventRecord {
+  name: Name
+  timingEvents: AnonymousTimingEvents
 }
 
-export interface FinalRaceEntry {
-  start: number | null
-  end: number | null
+interface AnonymousTimingEvents {
+  starts: AnonymousStartTimingEvent[]
+  ends: AnonymousEndTimingEvent[]
+}
+
+export interface AnonymousStartTimingEvent extends Omit<StartTimingEvent, 'id'> {
+}
+
+export interface AnonymousEndTimingEvent extends Omit<EndTimingEvent, 'id'> {
+}
+
+/** Results are the final parsed data structure **/
+
+export type ResultRecords = Record<Id, ResultRecord>
+
+export interface ResultRecord {
+  name: Name
+  races: ComputedRaceInstance[]
+}
+
+export interface ComputedRaceInstance {
+  start: Time | null
+  end: Time | null
   touchedGates: number | null
   missedGates: number | null
 }
 
-export interface DataStructure {
-  [key: string]: { starts: StartRecord[], ends: EndRecord[] }
-}
+/** Intermediate **/
 
-export interface StartRecord extends Omit<StartTimingEvent, 'id'> {
-}
-
-export interface EndRecord extends Omit<EndTimingEvent, 'id'> {
-}
-
-export interface NamesMap {
-  [key: Id]: string
-}
-
-export interface NameRecord {
-  id: Id
-  name: string
+export interface InitialPassRaceEntry {
+  start: Time
+  end: undefined
 }
 
 export interface Selectors {
@@ -62,12 +75,12 @@ export interface Selectors {
 
 export interface OrderedSelectorResults {
   id: Id
-  name: string
-  results: Result[]
+  name: Name
+  results: CompleteComputedRaceInstance[]
 }
 
-export interface Result extends FinalRaceEntry {
-  time: number | null
+export interface CompleteComputedRaceInstance extends ComputedRaceInstance {
+  time: Time | null
   adjustedTime: number | null
 }
 

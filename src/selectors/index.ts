@@ -1,12 +1,12 @@
-import { NamesMap, ResultsMap, Selectors } from '../types'
+import { ResultRecords, Selectors } from '../types'
 import { ordered } from './ordered'
 import { personal } from './personal'
 import { overall } from './overall'
 
-export const selectors = (data: ResultsMap, names: NamesMap): Selectors => {
+export const selectors = (data: ResultRecords): Selectors => {
   return {
-    overall: overall(data, names),
-    personal: personal(data, names),
-    ordered: ordered(data, names)
+    overall: overall(data),
+    personal: personal(data),
+    ordered: ordered(data)
   }
 }

@@ -1,4 +1,4 @@
-import { FinalRaceEntry, Id, NamesMap, ResultsMap } from '../types'
+import { Id, ResultRecord, ResultRecords } from '../types'
 
 // sorted alpha by name
 export interface PersonalResult {
@@ -7,22 +7,20 @@ export interface PersonalResult {
   numberOfRaces: number
 }
 
-export const personal = (data: ResultsMap, names: NamesMap): PersonalResult[] => {
+export const personal = (data: ResultRecords): PersonalResult[] => {
   const results: PersonalResult[] = []
 
   Object.entries(data)
-    .map<PersonalResult>(addProperties(names))
+    .map<PersonalResult>(addProperties)
     .sort((a, b) => b.name.localeCompare(a.name))
 
   return results
 }
 
-const addProperties = (names: NamesMap) => {
-  return ([id, results]: [id: Id, results: FinalRaceEntry[]]): PersonalResult => {
-    return ({
-      id,
-      name: names[id],
-      numberOfRaces: results.length
-    })
-  }
+const addProperties = ([id, record]: [id: Id, record: ResultRecord]): PersonalResult => {
+  return ({
+    id,
+    name: record.name,
+    numberOfRaces: record.races.length
+  })
 }

@@ -1,64 +1,64 @@
 import {
-  DataStructure,
-  EndRecord,
+  AnonymousEndTimingEvent,
+  AnonymousStartTimingEvent,
+  ComputedRaceInstance,
   EndTimingEvent,
-  FinalRaceEntry,
-  Id,
   InitialPassRaceEntry,
-  ResultsMap,
-  StartRecord,
-  StartTimingEvent
+  NameRecord,
+  ResultRecords,
+  StartTimingEvent,
+  TimingEventRecords
 } from '../types'
 
-export const buildResults = (starts: StartTimingEvent[], ends: EndTimingEvent[]): ResultsMap => {
-  const uniqueIds: Id[] = createUniqueIds(starts, ends)
-  const allRacerData: DataStructure = separateData(uniqueIds, starts, ends)
-  const finalRacesMap: ResultsMap = {}
+export const buildResults = (names: NameRecord[], starts: StartTimingEvent[], ends: EndTimingEvent[]): ResultRecords => {
+  const allRacerData = separateData(names, starts, ends)
+  const finalRacesMap: ResultRecords = {}
   for (const id in allRacerData) {
     const racerData = allRacerData[id]
-    finalRacesMap[id] = abc(racerData.starts, racerData.ends)
+    finalRacesMap[id] = {
+      name: racerData.name,
+      races: computeRaceInstances(racerData.timingEvents)
+    }
   }
 
   return finalRacesMap
 }
 
-export const abc = (starts: StartRecord[], ends: EndRecord[]): FinalRaceEntry[] => {
-  const initalPass: InitialPassRaceEntry[] = starts.map(start => ({
+export const computeRaceInstances = (
+  timingEvents: { starts: AnonymousStartTimingEvent[], ends: AnonymousEndTimingEvent[] }
+): ComputedRaceInstance[] => {
+  const initialPassRaceEntries: InitialPassRaceEntry[] = timingEvents.starts.map(start => ({
     start: start.time,
     end: undefined
   }))
 
-  const finals: FinalRaceEntry[] = []
+  const finals: ComputedRaceInstance[] = []
 
   let pointer = 0
 
-  for (const end of ends) {
-    if (initalPass[pointer] === undefined || end.time < initalPass[pointer].start) {
+  for (const end of timingEvents.ends) {
+    if (initialPassRaceEntries[pointer] === undefined || end.time < initialPassRaceEntries[pointer].start) {
       finals.push(buildEntry.startless(end))
-    } else if (end.time >= initalPass[pointer].start) {
-      while (initalPass[pointer + 1] !== undefined && end.time > initalPass[pointer + 1].start) {
-        finals.push(buildEntry.endless(initalPass[pointer].start))
+    } else if (end.time >= initialPassRaceEntries[pointer].start) {
+      while (initialPassRaceEntries[pointer + 1] !== undefined && end.time > initialPassRaceEntries[pointer + 1].start) {
+        finals.push(buildEntry.endless(initialPassRaceEntries[pointer].start))
         pointer++
       }
-      finals.push(buildEntry.base(initalPass[pointer].start, end))
+      finals.push(buildEntry.base(initialPassRaceEntries[pointer].start, end))
       pointer++
     } else {
       throw new Error('An unexpected error occurred.')
     }
   }
 
-  const startsAfterCurrentIndex = initalPass.slice(pointer)
+  const startsAfterCurrentIndex = initialPassRaceEntries.slice(pointer)
   finals.push(...startsAfterCurrentIndex.map(e => buildEntry.endless(e.start)))
 
   return finals
 }
 
-export const createUniqueIds = (starts: StartTimingEvent[], ends: EndTimingEvent[]): Id[] => {
-  return [...new Set([...starts, ...ends].map(e => e.id))]
-}
-
 export const buildEntry = {
-  startless (end: EndRecord): FinalRaceEntry {
+  startless (end: AnonymousEndTimingEvent): ComputedRaceInstance {
     return {
       start: null,
       end: end.time,
@@ -66,7 +66,7 @@ export const buildEntry = {
       missedGates: end.missedGates
     }
   },
-  endless (startTime: number): FinalRaceEntry {
+  endless (startTime: number): ComputedRaceInstance {
     return {
       start: startTime,
       end: null,
@@ -74,7 +74,7 @@ export const buildEntry = {
       missedGates: null
     }
   },
-  base (startTime: number, end: EndRecord): FinalRaceEntry {
+  base (startTime: number, end: AnonymousEndTimingEvent): ComputedRaceInstance {
     return {
       start: startTime,
       end: end.time,
@@ -84,22 +84,28 @@ export const buildEntry = {
   }
 }
 
-export const separateData = (uniqueIds: Id[], starts: StartTimingEvent[], ends: EndTimingEvent[]): DataStructure => {
-  const data: DataStructure = {}
+export const separateData = (names: NameRecord[], starts: StartTimingEvent[], ends: EndTimingEvent[]): TimingEventRecords => {
+  const data: TimingEventRecords = {}
 
-  for (const id of uniqueIds) {
+  for (const {
+    id,
+    name
+  } of names) {
     data[id] = {
-      starts: [],
-      ends: []
+      name,
+      timingEvents: {
+        starts: [],
+        ends: []
+      }
     }
   }
 
   for (const start of starts) {
-    data[start.id].starts.push({ time: start.time })
+    data[start.id].timingEvents.starts.push({ time: start.time })
   }
 
   for (const end of ends) {
-    data[end.id].ends.push({
+    data[end.id].timingEvents.ends.push({
       time: end.time,
       missedGates: end.missedGates,
       touchedGates: end.touchedGates
