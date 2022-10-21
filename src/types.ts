@@ -87,3 +87,7 @@ export interface PenaltyConfig {
   number: number | null;
   penalty: number;
 }
+
+export interface GlobalPenaltyConfig {
+  [key: string]: number;
+}
