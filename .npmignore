@@ -1,7 +1,8 @@
-// IDE
 .idea
 src
 .eslintrc.js
 jest.config.js
 tsconfig.build.json
 tsconfig.json
+.husky
+commitlint.config.js
