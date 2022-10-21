@@ -13,8 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "outDir": "lib",
-    "declaration": true,
-    "watch": true
+    "declaration": true
   },
   "include": [
     "src/**/*.ts"
