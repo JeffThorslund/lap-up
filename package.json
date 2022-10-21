@@ -1,7 +1,7 @@
 {
   "name": "slalom-parser",
   "repository": "https://github.com/JeffThorslund/slalomX",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "main": "lib/index.js",
   "scripts": {
     "test": "jest --watch",
