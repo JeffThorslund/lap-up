@@ -1,4 +1,8 @@
-import { buildEntry, buildResults, computeRaceInstances } from "./buildResults";
+import {
+  buildEntry,
+  createFinalResultsDic,
+  computeRaceInstances,
+} from "./createFinalResultsDic";
 import {
   AnonymousEndTimingEvent,
   AnonymousStartTimingEvent,
@@ -6,6 +10,7 @@ import {
   ResultRecords,
   StartTimingEvent,
 } from "../types";
+import { createTimingEventDic } from "./createTimingEventDic";
 
 const buildResultsWithNames = (
   starts: StartTimingEvent[],
@@ -22,7 +27,9 @@ const buildResultsWithNames = (
     },
   ];
 
-  return buildResults(names, starts, ends);
+  const timingEventDic = createTimingEventDic(names, starts, ends);
+
+  return createFinalResultsDic(timingEventDic);
 };
 
 describe("build entry", () => {
@@ -30,14 +37,12 @@ describe("build entry", () => {
     expect(
       buildEntry.startless({
         time: 9,
-        missedGates: 0,
-        touchedGates: 0,
+        penalties: {},
       })
     ).toEqual({
       start: null,
       end: 9,
-      missedGates: 0,
-      touchedGates: 0,
+      penalties: {},
     });
   });
 
@@ -45,8 +50,7 @@ describe("build entry", () => {
     expect(buildEntry.endless(9)).toEqual({
       start: 9,
       end: null,
-      missedGates: null,
-      touchedGates: null,
+      penalties: null,
     });
   });
 
@@ -54,14 +58,12 @@ describe("build entry", () => {
     expect(
       buildEntry.base(9, {
         time: 10,
-        missedGates: 0,
-        touchedGates: 0,
+        penalties: {},
       })
     ).toEqual({
       start: 9,
       end: 10,
-      missedGates: 0,
-      touchedGates: 0,
+      penalties: {},
     });
   });
 });
@@ -88,8 +90,7 @@ describe("interate over obj", () => {
           {
             id: "1",
             time: 1,
-            missedGates: 0,
-            touchedGates: 0,
+            penalties: {},
           },
         ]
       )
@@ -103,9 +104,8 @@ describe("interate over obj", () => {
         races: [
           {
             end: 1,
-            missedGates: 0,
             start: null,
-            touchedGates: 0,
+            penalties: {},
           },
         ],
       },
@@ -120,14 +120,12 @@ describe("interate over obj", () => {
           {
             id: "1",
             time: 1,
-            missedGates: 0,
-            touchedGates: 0,
+            penalties: {},
           },
           {
             id: "1",
             time: 10,
-            missedGates: 0,
-            touchedGates: 0,
+            penalties: {},
           },
         ]
       )
@@ -141,15 +139,13 @@ describe("interate over obj", () => {
         races: [
           {
             end: 1,
-            missedGates: 0,
             start: null,
-            touchedGates: 0,
+            penalties: {},
           },
           {
             end: 10,
-            missedGates: 0,
             start: null,
-            touchedGates: 0,
+            penalties: {},
           },
         ],
       },
@@ -182,14 +178,12 @@ describe("interate over obj", () => {
           {
             start: 1,
             end: null,
-            missedGates: null,
-            touchedGates: null,
+            penalties: null,
           },
           {
             start: 2,
             end: null,
-            missedGates: null,
-            touchedGates: null,
+            penalties: null,
           },
         ],
       },
@@ -209,8 +203,7 @@ describe("interate over obj", () => {
           {
             id: "1",
             time: 200,
-            missedGates: 0,
-            touchedGates: 0,
+            penalties: {},
           },
         ]
       )
@@ -225,8 +218,7 @@ describe("interate over obj", () => {
           {
             start: 100,
             end: 200,
-            missedGates: 0,
-            touchedGates: 0,
+            penalties: {},
           },
         ],
       },
@@ -250,8 +242,7 @@ describe("interate over obj", () => {
           {
             id: "1",
             time: 25,
-            missedGates: 0,
-            touchedGates: 0,
+            penalties: {},
           },
         ]
       )
@@ -266,14 +257,12 @@ describe("interate over obj", () => {
           {
             start: 10,
             end: null,
-            missedGates: null,
-            touchedGates: null,
+            penalties: null,
           },
           {
             start: 20,
             end: 25,
-            missedGates: 0,
-            touchedGates: 0,
+            penalties: {},
           },
         ],
       },
@@ -288,8 +277,7 @@ describe("single person iterator", () => {
 
   const e = (num: number): AnonymousEndTimingEvent => ({
     time: num,
-    missedGates: 0,
-    touchedGates: 0,
+    penalties: {},
   });
 
   test("regular case", () => {
@@ -302,20 +290,17 @@ describe("single person iterator", () => {
       {
         start: 10,
         end: 15,
-        missedGates: 0,
-        touchedGates: 0,
+        penalties: {},
       },
       {
         start: 20,
         end: 25,
-        missedGates: 0,
-        touchedGates: 0,
+        penalties: {},
       },
       {
         start: 30,
         end: 35,
-        missedGates: 0,
-        touchedGates: 0,
+        penalties: {},
       },
     ]);
   });
@@ -330,20 +315,17 @@ describe("single person iterator", () => {
       {
         start: 10,
         end: null,
-        missedGates: null,
-        touchedGates: null,
+        penalties: null,
       },
       {
         start: 20,
         end: null,
-        missedGates: null,
-        touchedGates: null,
+        penalties: null,
       },
       {
         start: 30,
         end: null,
-        missedGates: null,
-        touchedGates: null,
+        penalties: null,
       },
     ]);
   });
@@ -358,20 +340,17 @@ describe("single person iterator", () => {
       {
         start: null,
         end: 15,
-        missedGates: 0,
-        touchedGates: 0,
+        penalties: {},
       },
       {
         start: null,
         end: 25,
-        missedGates: 0,
-        touchedGates: 0,
+        penalties: {},
       },
       {
         start: null,
         end: 35,
-        missedGates: 0,
-        touchedGates: 0,
+        penalties: {},
       },
     ]);
   });

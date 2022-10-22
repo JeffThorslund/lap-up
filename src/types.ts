@@ -14,10 +14,11 @@ interface TimingEvent {
 
 export type StartTimingEvent = TimingEvent;
 
-export interface EndTimingEvent extends TimingEvent {
-  touchedGates: number;
-  missedGates: number;
-}
+export type EndTimingEvent = TimingEvent & {
+  penalties: PenaltyRecord;
+};
+
+export type PenaltyRecord = Record<string, number>;
 
 export interface NameRecord {
   id: Id;
@@ -26,7 +27,7 @@ export interface NameRecord {
 
 /** UnComputed Data Structure **/
 
-export type TimingEventRecords = Record<Id, TimingEventRecord>;
+export type TimingEventDic = Record<Id, TimingEventRecord>;
 
 interface TimingEventRecord {
   name: Name;
@@ -55,8 +56,7 @@ export interface ResultRecord {
 export interface ComputedRaceInstance {
   start: Time | null;
   end: Time | null;
-  touchedGates: number | null;
-  missedGates: number | null;
+  penalties: PenaltyRecord | null;
 }
 
 /** Intermediate **/
@@ -88,6 +88,7 @@ export interface PenaltyConfig {
   penalty: number;
 }
 
-export interface GlobalPenaltyConfig {
-  [key: string]: number;
-}
+export type GlobalPenaltyConfig = Record<string, number> & {
+  id?: never;
+  time?: never;
+};

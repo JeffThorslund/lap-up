@@ -7,8 +7,8 @@ import {
   StartTimingEvent,
 } from "./types";
 import { selectors } from "./selectors";
-import { buildResults } from "./results/buildResults";
-import { index } from "./validation";
+import { createFinalResultsDic } from "./results/createFinalResultsDic";
+import { createTimingEventDic } from "./results/createTimingEventDic";
 
 export const slalomX = (
   names: NameRecord[],
@@ -16,9 +16,9 @@ export const slalomX = (
   ends: EndTimingEvent[],
   config: GlobalPenaltyConfig
 ): Selectors => {
-  index(ends, config);
-  const resultsMap = buildResults(names, starts, ends);
-  return selectors(resultsMap);
+  const timingEventDic = createTimingEventDic(names, starts, ends);
+  const resultsMap = createFinalResultsDic(timingEventDic);
+  return selectors(resultsMap, config);
 };
 
 export { types };

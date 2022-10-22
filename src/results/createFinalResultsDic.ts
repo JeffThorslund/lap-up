@@ -2,31 +2,24 @@ import {
   AnonymousEndTimingEvent,
   AnonymousStartTimingEvent,
   ComputedRaceInstance,
-  EndTimingEvent,
   InitialPassRaceEntry,
-  NameRecord,
   ResultRecords,
-  StartTimingEvent,
-  TimingEventRecords,
+  TimingEventDic,
 } from "../types";
 
-export const buildResults = (
-  names: NameRecord[],
-  starts: StartTimingEvent[],
-  ends: EndTimingEvent[]
-): ResultRecords => {
-  const allRacerData = separateData(names, starts, ends);
-  const finalRacesMap: ResultRecords = {};
-  for (const id in allRacerData) {
-    const racerData = allRacerData[id];
-    finalRacesMap[id] = {
-      name: racerData.name,
-      races: computeRaceInstances(racerData.timingEvents),
-    };
-  }
-
-  return finalRacesMap;
-};
+export const createFinalResultsDic = (
+  timingEventDic: TimingEventDic
+): ResultRecords =>
+  Object.entries(timingEventDic).reduce<ResultRecords>(
+    (prevResultRecords, [id, timingEventRecord]) => ({
+      ...prevResultRecords,
+      [id]: {
+        name: timingEventRecord.name,
+        races: computeRaceInstances(timingEventRecord.timingEvents),
+      },
+    }),
+    {}
+  );
 
 export const computeRaceInstances = (timingEvents: {
   starts: AnonymousStartTimingEvent[];
@@ -76,56 +69,21 @@ export const buildEntry = {
     return {
       start: null,
       end: end.time,
-      touchedGates: end.touchedGates,
-      missedGates: end.missedGates,
+      penalties: end.penalties,
     };
   },
   endless(startTime: number): ComputedRaceInstance {
     return {
       start: startTime,
       end: null,
-      touchedGates: null,
-      missedGates: null,
+      penalties: null,
     };
   },
   base(startTime: number, end: AnonymousEndTimingEvent): ComputedRaceInstance {
     return {
       start: startTime,
       end: end.time,
-      touchedGates: end.touchedGates,
-      missedGates: end.missedGates,
+      penalties: end.penalties,
     };
   },
-};
-
-export const separateData = (
-  names: NameRecord[],
-  starts: StartTimingEvent[],
-  ends: EndTimingEvent[]
-): TimingEventRecords => {
-  const data: TimingEventRecords = {};
-
-  for (const { id, name } of names) {
-    data[id] = {
-      name,
-      timingEvents: {
-        starts: [],
-        ends: [],
-      },
-    };
-  }
-
-  for (const start of starts) {
-    data[start.id].timingEvents.starts.push({ time: start.time });
-  }
-
-  for (const end of ends) {
-    data[end.id].timingEvents.ends.push({
-      time: end.time,
-      missedGates: end.missedGates,
-      touchedGates: end.touchedGates,
-    });
-  }
-
-  return data;
 };

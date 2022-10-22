@@ -1,12 +1,13 @@
-import { ResultRecords, Selectors } from "../types";
-import { ordered } from "./ordered";
+import { GlobalPenaltyConfig, ResultRecords, Selectors } from "../types";
+import { ordered } from "./ordered/ordered";
 import { personal } from "./personal";
 import { overall } from "./overall";
 
-export const selectors = (data: ResultRecords): Selectors => {
-  return {
-    overall: overall(data),
-    personal: personal(data),
-    ordered: ordered(data),
-  };
-};
+export const selectors = (
+  resultRecords: ResultRecords,
+  config: GlobalPenaltyConfig
+): Selectors => ({
+  overall: overall(resultRecords),
+  personal: personal(resultRecords),
+  ordered: ordered(resultRecords, config),
+});
