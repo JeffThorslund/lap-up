@@ -8,6 +8,7 @@
   },
   "scripts": {
     "prepare": "husky install",
+    "lint": "eslint --fix",
     "test": ""
   },
   "repository": {
@@ -23,6 +24,14 @@
   "dependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
-    "husky": "^8.0.1"
+    "husky": "^8.0.1",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.3.0",
+    "eslint-plugin-promise": "^6.0.1",
+    "prettier": "2.7.1",
+    "@typescript-eslint/eslint-plugin": "^5.38.1"
   }
 }
