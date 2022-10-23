@@ -39,10 +39,9 @@ interface AnonymousTimingEvents {
   ends: AnonymousEndTimingEvent[];
 }
 
-export interface AnonymousStartTimingEvent
-  extends Omit<StartTimingEvent, "id"> {}
+export type AnonymousStartTimingEvent = Omit<StartTimingEvent, "id">;
 
-export interface AnonymousEndTimingEvent extends Omit<EndTimingEvent, "id"> {}
+export type AnonymousEndTimingEvent = Omit<EndTimingEvent, "id">;
 
 /** Results are the final parsed data structure **/
 

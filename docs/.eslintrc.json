@@ -1,0 +1,12 @@
+{
+  "extends": ["plugin:react/recommended"],
+  "rules": {
+    "@typescript-eslint/no-var-requires": 0
+  },
+  "plugins": ["react"],
+  "settings": {
+    "react": {
+      "version": "999.999.999"
+    }
+  }
+}
