@@ -7,14 +7,10 @@ export interface PersonalResult {
   numberOfRaces: number;
 }
 
-export const personal = (data: ResultRecords): PersonalResult[] => {
-  const results: PersonalResult[] = [];
-
-  Object.entries(data)
+export const personal = (resultRecords: ResultRecords): PersonalResult[] => {
+  return Object.entries(resultRecords)
     .map<PersonalResult>(addProperties)
     .sort((a, b) => b.name.localeCompare(a.name));
-
-  return results;
 };
 
 const addProperties = ([id, record]: [

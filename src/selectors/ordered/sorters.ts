@@ -20,10 +20,7 @@ export const sortCompetitorsByBestResult = (
   if (a === undefined) return 1;
   if (b === undefined) return -1;
 
-  // sort racers with an invalid result as their best result, last
-  if (a.adjustedTime === null) return 1;
-  if (b.adjustedTime === null) return -1;
-
-  // sort rest of racers by their best result
-  return a.adjustedTime - b.adjustedTime;
+  /** now that we know that the remaining races have at least one race,
+   * we can use the race sorting algorithm to sort by fastest racer */
+  return sortRacesByNonIncreasing(a.adjustedTime, b.adjustedTime);
 };
