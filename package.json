@@ -1,7 +1,7 @@
 {
   "name": "slalomx",
   "repository": "https://github.com/JeffThorslund/slalomX",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "lib/index.js",
   "scripts": {
     "start": "node lib/index.js",
