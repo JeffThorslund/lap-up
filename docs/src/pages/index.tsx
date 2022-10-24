@@ -15,17 +15,25 @@ function HomepageHeader() {
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro"
-          >
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
+          <ActionButton label={"Read The Docs 📖"} to={"/docs/how-to-use"} />
+          <ActionButton label={"See The Action 🥇"} to={"/demo"} />
         </div>
       </div>
     </header>
   );
 }
+
+const ActionButton = (props: { label: string; to: string }) => {
+  return (
+    <Link
+      className="button button--secondary button--lg"
+      style={{ margin: 5 }}
+      to={props.to}
+    >
+      {props.label}
+    </Link>
+  );
+};
 
 export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
