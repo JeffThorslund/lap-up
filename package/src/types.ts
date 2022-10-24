@@ -91,3 +91,7 @@ export type GlobalPenaltyConfig = Record<string, number> & {
   id?: never;
   time?: never;
 };
+
+type T = Record<string, number>;
+
+type K = Record<keyof T, number>;
