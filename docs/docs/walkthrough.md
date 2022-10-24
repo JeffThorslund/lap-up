@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Let's Run A Race
+# Let's Host A Race
 
 ![Example banner](img.png)
 Put on that imagination cap, let's walk through this from start to finish.

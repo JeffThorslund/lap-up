@@ -7,7 +7,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Lap Up",
-  tagline: "Instantly Compile Race Data",
+  tagline:
+    "A tool that compiles raw data from sports racing events into awards structures and race statistics",
   url: "https://www.lap-up.netlify.app",
   baseUrl: "/",
   onBrokenLinks: "throw",

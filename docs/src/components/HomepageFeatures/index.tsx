@@ -4,49 +4,54 @@ import styles from "./styles.module.css";
 
 interface FeatureItem {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<"svg">>;
   description: React.ReactElement;
 }
 
 const FeatureList: FeatureItem[] = [
   {
-    title: "Easy to Use",
-    Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
+    title: "⚡️ Instantly Compile Race Data",
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Record when racers <strong>start</strong>, and when they cross the{" "}
+        <strong>finish line</strong>. Input that data in <strong>Lap Up</strong>{" "}
+        to see a full breakdown of awards, statistics and analytics.
       </>
     ),
   },
   {
-    title: "Focus on What Matters",
-    Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
+    title: "🚵‍ Flexible Race Format",
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        There are no recommendations on what type of race you can host.{" "}
+        <strong>Lap Up</strong> is intentionally <strong>un-opinionated</strong>{" "}
+        so you can mould it around your specific needs.{" "}
+        <strong>Any sport. Any format.</strong>
       </>
     ),
   },
   {
-    title: "Powered by React",
-    Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
+    title: "🏆 Proven Track Record",
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        This tool was used in a slalom kayaking race,{" "}
+        <a
+          href={"https://www.mamquammeltdown.com/results"}
+          target={"_blank"}
+          rel="noreferrer"
+        >
+          Mamquam Meltdown
+        </a>
+        , which included former Canadian National Athletes, to track over{" "}
+        <strong>50 racers</strong> and over{" "}
+        <strong>130 individual races</strong>.
       </>
     ),
   },
 ];
 
-function Feature({ title, Svg, description }: FeatureItem) {
+function Feature({ title, description }: FeatureItem) {
   return (
     <div className={clsx("col col--4")}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
         <p>{description}</p>
