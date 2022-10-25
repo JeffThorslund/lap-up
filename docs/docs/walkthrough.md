@@ -4,16 +4,16 @@ sidebar_position: 2
 
 # Let's Host A Race
 
-Put on that imagination cap, let's walk through this from start to finish.
+Let's walk through this from start to finish. This is your game plan.
 
 ![Kayakers banner](assets/img.png)
 
-## Who Am I?
+## Set The Scene
 
-You are a whitewater kayaker who is itching to host a slalom kayaking race on your local
-river. You spent your last dollar on cheap beer, so you can't afford any fancy race
-management tools. The river is out of cell service you can't use anything that requires
-internet connection.
+You are a whitewater kayaker who is itching to host a **slalom kayaking race on your local
+river**. You spent your last dollar on **cheap beer**, so you can't afford any fancy
+**race management tools**. The river is outside of cell service so you can't use anything
+that requires internet connection.
 
 That's not going to stop you because you have **Lap Up**, a pencil & paper, and a couple
 pals to help you out.
@@ -22,23 +22,16 @@ pals to help you out.
 
 You have a lot of options.
 
-### Starting Formats
-
-#### Mass Start
-
-Everyone starts together with the same `start` time.
-
-* Marathons
-
-#### Staggered Start
-
-Each person starts individual with varying `start` times.
-
-* Slalom Races
-* Time Trials
+* **Mass Start** - Everyone starts together with the same `start` time.
+* **Slalom Race** - Racers go one by one, going through gates on the way down. Missed
+  gates result in a time deduction (more on that later).
+* **Time Trials** - Racers to from start to finish with nothing to worry about except
+  sheer speed.
 
 You choose a **SLALOM RACE** where each competitor needs to navigate through hanging
 gates, while racing to the finish.
+
+![Phil banner](assets/phil.png)
 
 ## Sign Up
 

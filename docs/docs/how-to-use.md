@@ -7,12 +7,12 @@ sidebar_position: 1
 *Lap Up* is a tool for race organizers to instantly compile race statistics and analytics
 using the raw data from their event. 
 
-The word "race" means exactly what you think. This tool is for a:
+The word **"race"** means exactly what you think. This tool is for a:
 * Cycling club who wants to organize a **long distance biking race**
 * Public school that wants to host a **track and field day**
 * Mountain Bike Festival to **save costs on electronic recording devices**
 * Slalom Ski Racing team who is **tired of painstaking manual calculations**
-* Whitewater Kayakers looking to **host an event out of cell service**
+* Whitewater Kayakers looking to **host an event outside of cell service**
 
 Use your imagination!
 
