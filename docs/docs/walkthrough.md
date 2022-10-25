@@ -4,8 +4,9 @@ sidebar_position: 2
 
 # Let's Host A Race
 
-![Example banner](img.png)
 Put on that imagination cap, let's walk through this from start to finish.
+
+![Kayakers banner](assets/img.png)
 
 ## Who Am I?
 
@@ -17,7 +18,7 @@ internet connection.
 That's not going to stop you because you have **Lap Up**, a pencil & paper, and a couple
 pals to help you out.
 
-## 1. Choose Your Race Format
+## Choose Your Race Format
 
 You have a lot of options.
 
@@ -36,20 +37,18 @@ Each person starts individual with varying `start` times.
 * Slalom Races
 * Time Trials
 
-### Penalty Structure
+You choose a **SLALOM RACE** where each competitor needs to navigate through hanging
+gates, while racing to the finish.
 
-Are there any penalties in this race? 
+## Sign Up
 
-
-## 2. Sign Up
-
-This happens any time before the event. Record the persons `name`, and give them an 
-`id`. This `id` is what ties everything together so make sure they have it written on 
-a bracelet, bib, hand or handout. You should end up with a handwritten list that 
-resembles `SignUpRecord[]`.
+This happens any time before the event. Record the persons `name`, and give them an
+`id`. This `id` is what ties everything together so make sure they have it written on a
+bracelet, bib, hand or handout. You should end up with a handwritten list that
+resembles `NameRecord[]`.
 
 ```typescript
-interface SignUpRecord {
+interface NameRecord {
   name: string;
   id: string;
 }
@@ -58,12 +57,88 @@ interface SignUpRecord {
 :::caution
 
 **Lap Up** does not take gender into account. If your race categories are gender based,
-keep separate `SignUpRecord[]` lists for each gender.
+keep separate `NameRecord[]` lists for each gender.
 
 :::
 
-## Race Format
+## Plan Your Penalty Configuration
 
+If your race involves penalties for certain actions, plan out how they will be tracked,
+and how many seconds will be deducted for each penalty type.
+
+Turn this data into a simple `GlobalPenaltyConfig` object (see API Reference for more
+info).
+
+## Explain The Rules
+
+Make sure that all racers understand the format of the race, and any safety or operational
+concerns.
+
+![Explain](assets/explain.png)
+
+## Get In Position
+
+**Lap Up** requires 2 people to write, each with a pencil and paper.
+
+The *start time recorder* stays at the beginning of the race. They record the `id`
+and `time` whenever a racer leaves the gates.
+
+The *end time recorder* stays at the finish of the race. They record the `id`, the `time`,
+and the `number of penalties` that occurred when a racer crosses the finish line.
+
+:::info
+
+Luckily, there is no need for the *start time recorder* and the *end time recorder* to
+have any form of verbal or visual contact! They are both responsible for recording the
+current time when their respective racers start/end.
+
+:::
+
+## Ready, Set, GO!
+
+We'll leave this up to you!
+
+![Jump](assets/jump.png)
+
+## Parse The Data
+
+Once, all the races have finished, these papers full of scribbles must be parsed into
+usable data. The easiest way to do this is a **2-step process**.
+
+### 1. Transfer to CSV
+
+With your partner, transcribe the data into Google Sheets or Excel, using column headers
+that correspond with parameter fields in the API Reference.
+
+### 2. Convert to JSON
+
+Use an online converter to create a JSON object out of the CSV data.
+
+This is a converter we recommend:
+
+[CSV JSON Converter](https://csvjson.com/)
+
+:::danger
+
+As there is so much variability in data entry, **Lap Up** puts the onus on you to parse
+your raw data into a structure that matches the `parameters` outlined in the API
+Reference. There are no calculations or data modification, but it is still important to
+perform this step with care.
+
+:::
+
+## Call The Function
+
+This is the moment you have been waiting for. Call the function in any way you choose. See
+the Usage tab for more information. Explore the possible options of either writing the
+returned value to a `JSON` file, or feeding the data to a publicly available web
+interface.
+
+**Explore the data. Use it for your awards ceremony. Post it online for everyone to see.**
+
+You did a great thing! Don't forget to enjoy the moment and **smile**!
+
+![Jump](assets/archie.png)
 
 
 
