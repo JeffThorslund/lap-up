@@ -111,7 +111,7 @@ This is a converter we recommend:
 
 [CSV JSON Converter](https://csvjson.com/)
 
-:::danger
+:::caution
 
 As there is so much variability in data entry, **Lap Up** puts the onus on you to parse
 your raw data into a structure that matches the `parameters` outlined in the API
