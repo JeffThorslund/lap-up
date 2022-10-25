@@ -16,7 +16,7 @@ function HomepageHeader() {
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <ActionButton label={"Read The Docs 📖"} to={"/docs/how-to-use"} />
-          <ActionButton label={"See The Action 🥇"} to={"/demo"} />
+          {/* <ActionButton label={"See The Action 🥇"} to={"/demo"} /> */}
         </div>
       </div>
     </header>
