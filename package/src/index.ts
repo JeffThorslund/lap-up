@@ -10,7 +10,7 @@ import { selectors } from "./selectors";
 import { createFinalResultsDic } from "./results/createFinalResultsDic";
 import { createTimingEventDic } from "./results/createTimingEventDic";
 
-export const slalomX = (
+export const lapUp = (
   names: NameRecord[],
   starts: StartTimingEvent[],
   ends: EndTimingEvent[],

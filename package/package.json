@@ -1,7 +1,7 @@
 {
-  "name": "slalomx",
-  "repository": "https://github.com/JeffThorslund/slalomX",
-  "version": "0.0.1",
+  "name": "lap-up",
+  "repository": "https://github.com/JeffThorslund/lap-up",
+  "version": "0.0.0",
   "main": "lib/index.js",
   "scripts": {
     "start": "node lib/index.js",
