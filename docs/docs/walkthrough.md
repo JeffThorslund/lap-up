@@ -120,7 +120,7 @@ perform this step with care.
 
 :::
 
-## Call The Function
+## Fire it Up!
 
 This is the moment you have been waiting for. Call the function in any way you choose. See
 the Usage tab for more information. Explore the possible options of either writing the
