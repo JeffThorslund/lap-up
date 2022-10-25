@@ -49,11 +49,11 @@ const config = {
             position: "left",
             label: "Docs",
           },
-          {
-            to: "demo",
-            label: "Try it!",
-            position: "left",
-          },
+          // {
+          //   to: "demo",
+          //   label: "Try it!",
+          //   position: "left",
+          // },
           {
             href: "https://github.com/JeffThorslund/lap-up",
             label: "NPM",
