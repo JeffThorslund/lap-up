@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "@theme/Layout";
 import ReactJson, { ThemeKeys } from "react-json-view";
-import { slalomX } from "slalomx";
+import { lapUp } from "lap-up";
 import { useMockData } from "@site/src/_utils/generator/useMockData";
 import { NewDataButton } from "@site/src/components/Demo/NewDataButton";
 import { useColorMode } from "@docusaurus/theme-common";
@@ -15,7 +15,7 @@ export default function Demo() {
     touchedGates: 8,
   };
 
-  const results = slalomX(data.names, data.starts, data.ends, config);
+  const results = lapUp(data.names, data.starts, data.ends, config);
 
   return (
     <Layout title="Hello" description="Hello React Page">
