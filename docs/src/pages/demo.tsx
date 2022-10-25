@@ -19,7 +19,7 @@ export default function Demo() {
   const results = lapUp(data.names, data.starts, data.ends, config);
 
   return (
-    <Layout title="Demo" description="Hello React Page">
+    <Layout title="Demo" description="Try it out">
       <Header createNewDataSet={createNewDataSet} />
 
       <JSONDataRow title={"Parameters"}>

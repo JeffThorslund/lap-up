@@ -40,7 +40,7 @@ export default function Home(): React.ReactElement {
   return (
     <Layout
       title={`Welcome to ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
+      description="A tool that compiles raw data from sports racing events into awards structures and race statistics"
     >
       <HomepageHeader />
       <main>
