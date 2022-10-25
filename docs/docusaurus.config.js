@@ -55,7 +55,7 @@ const config = {
             position: "left",
           },
           {
-            href: "https://github.com/JeffThorslund/lap-up",
+            href: "https://www.npmjs.com/package/lap-up",
             label: "NPM",
             position: "right",
           },
