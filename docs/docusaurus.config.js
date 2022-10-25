@@ -56,6 +56,11 @@ const config = {
           },
           {
             href: "https://github.com/JeffThorslund/lap-up",
+            label: "NPM",
+            position: "right",
+          },
+          {
+            href: "https://github.com/JeffThorslund/lap-up",
             label: "GitHub",
             position: "right",
           },
